@@ -41,11 +41,11 @@ class BluetoothPrinter {
 
     printText(text) {
         let encoder = new TextEncoder('utf-8');         
-        return this.writePrinter(encoder.encode(text));        
+        return this.print(encoder.encode(text));        
     }
 
     printArray(list) {     
-        return this.writePrinter(new Uint8Array(list));;        
+        return this.print(new Uint8Array(list));;        
     }
 
     onDisconnected() {
