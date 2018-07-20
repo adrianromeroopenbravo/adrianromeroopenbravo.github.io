@@ -19,7 +19,7 @@ class BluetoothPrinter {
             });
     }
 
-    writePrinter(data) {
+    print(data) {
         if (!this.device) {
             return Promise.reject('Device is not connected.');
         }
@@ -31,16 +31,24 @@ class BluetoothPrinter {
         .then(service => {
             return service.getCharacteristic('bef8d6c9-9c21-4c9e-b632-bd58c1009f9f');
         })
-        .then(characteristic => {
-            let encoder = new TextEncoder('utf-8');         
-            characteristic.writeValue(encoder.encode(data));
+        .then(characteristic => {      
+            characteristic.writeValue(data);
         })
         .then(_ => {
             return this.server.disconnect();
         });
     }
 
+    printText(text) {
+        let encoder = new TextEncoder('utf-8');         
+        return this.writePrinter(encoder.encode(data));        
+    }
+
+    printArray(list) {     
+        return this.writePrinter(new Uint8Array(list));;        
+    }
+
     onDisconnected() {
-        alert('Device is disconnected.');
+        console.log('Device is disconnected.');
     }
 }

@@ -1,4 +1,4 @@
-var bluetoothPrinter = new BluetoothPrinter();
+let bluetoothPrinter = new BluetoothPrinter();
 
 document.getElementById('request').addEventListener('click', event => {
   bluetoothPrinter.request()
@@ -9,7 +9,10 @@ document.getElementById('request').addEventListener('click', event => {
 
 document.getElementById('print').addEventListener('click', event => {
     
-    bluetoothPrinter.writePrinter(document.getElementById('datainput').value)
+    bluetoothPrinter.printText(document.getElementById('datainput').value)
+    .then(_ => {
+        bluetoothPrinter.printArray(ESCPOS.NEW_LINE)
+    })
     .catch(error => { 
         alert(error);
     });
