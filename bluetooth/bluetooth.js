@@ -19,7 +19,7 @@ class BluetoothPrinter {
             });
     }
 
-    writePrinterEncoded(data) {
+    writePrinter(data) {
         if (!this.device) {
             return Promise.reject('Device is not connected.');
         }
