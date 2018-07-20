@@ -8,7 +8,7 @@ class BluetoothPrinter {
     request() {
       let options = {
         "filters": [{
-            "services": [0xe7810a7173ae499d8c15faa9aef0c3f2],
+            "services": [0x1800], // Generic access
         }],
         //"optionalServices": [0xe7810a7173ae499d8c15faa9aef0c3f2],
       };
