@@ -24,22 +24,35 @@ class BluetoothPrinter {
         if (!this.device) {
             return Promise.reject('Device is not connected.');
         }
-        return this.device.gatt.connect();
+        return this.device.gatt.connect()
+        .then(server => {
+            alert('connected');
+            return server.getPrimaryService('e7810a71-73ae-499d-8c15-faa9aef0c3f2');
+        })
+        .then(service => {
+            service.getCharacteristic('bef8d6c9-9c21-4c9e-b632-bd58c1009f9f');
+        })
+        .then(characteristic => {
+            alert ('got characteristic');
+            this.characteristic = characteristic;
+        })
+    }
+    writePrinter(data) {
+        if (!this.characteristic) {
+            alert('No characteristic');
+            return Promise.reject('No characteristic');
+        }
+        return this.characteristic.writeValue(data);    
     }
 
-    writePrinter(data) {
-        alert('printing');
-        return this.device.gatt.getPrimaryService('e7810a71-73ae-499d-8c15-faa9aef0c3f2')
-            .then(service => {
-                alert('got service');
-                service.getCharacteristic('bef8d6c9-9c21-4c9e-b632-bd58c1009f9f');
-            })
-            .then(characteristic => {
-                alert('got characteristic');
-                let encoder = new TextEncoder('utf-8');
-                let userDescription = encoder.encode(data);
-                return characteristic.writeValue(userDescription);                
-            });
+    writePrinterEncoded(data) {
+        if (!this.characteristic) {
+            alert('No characteristic');
+            return Promise.reject('No characteristic');
+        }
+        let encoder = new TextEncoder('utf-8');
+        let userDescription = encoder.encode(data);
+        return this.characteristic.writeValue(userDescription);                
     }
 
     disconnect() {
