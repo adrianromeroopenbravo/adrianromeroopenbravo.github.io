@@ -27,6 +27,7 @@ class BluetoothPrinter {
         return this.device.gatt.connect()
         .then(server => {
             alert('connected');
+            this.server = server;
             return server.getPrimaryService('e7810a71-73ae-499d-8c15-faa9aef0c3f2');
         })
         .then(service => {
