@@ -8,9 +8,9 @@ class BluetoothPrinter {
     request() {
       let options = {
         "filters": [{
-  
+            "services": [0xe7810a7173ae499d8c15faa9aef0c3f2],
         }],
-        // "optionalServices": [0xFF02],
+        //"optionalServices": [0xe7810a7173ae499d8c15faa9aef0c3f2],
       };
       return navigator.bluetooth.requestDevice(options)
       .then(device => {
@@ -27,8 +27,8 @@ class BluetoothPrinter {
     }
     
     writePrinter(data) {
-      return this.device.gatt.getPrimaryService(0xFF02)
-      .then(service => service.getCharacteristic(0xFFFC))
+      return this.device.gatt.getPrimaryService(0xe7810a7173ae499d8c15faa9aef0c3f2)
+      .then(service => service.getCharacteristic(0xbef8d6c99c214c9eb632bd58c1009f9f))
       .then(characteristic => characteristic.writeValue(data));
     }
   
