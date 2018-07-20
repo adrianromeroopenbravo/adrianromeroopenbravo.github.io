@@ -41,7 +41,7 @@ class BluetoothPrinter {
 
     printText(text) {
         let encoder = new TextEncoder('utf-8');         
-        return this.writePrinter(encoder.encode(data));        
+        return this.writePrinter(encoder.encode(text));        
     }
 
     printArray(list) {     
