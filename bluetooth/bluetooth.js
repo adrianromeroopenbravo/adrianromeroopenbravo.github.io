@@ -10,7 +10,7 @@ class BluetoothPrinter {
             // "filters": [{
 
             // }],
-            "optionalServices": [0xe7810a71],
+            optionalServices: ['e7810a71-73ae-499d-8c15-faa9aef0c3f2'],
             acceptAllDevices: true,
         };
         return navigator.bluetooth.requestDevice(options)
