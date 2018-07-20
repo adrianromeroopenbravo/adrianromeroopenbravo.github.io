@@ -10,7 +10,7 @@ document.getElementById('print').addEventListener('click', event => {
     .catch(error => { alert(error) });
 });
 
-ocument.getElementById('printencoded').addEventListener('click', event => {
+document.getElementById('printencoded').addEventListener('click', event => {
     bluetoothPrinter.writePrinterEncoded('Esto es una prueba Encoded\n')
     .catch(error => { alert(error) });
 });
