@@ -29,10 +29,10 @@ class BluetoothPrinter {
 
     writePrinter(data) {
         alert('printing');
-        return this.device.gatt.getPrimaryService(0xe7810a71)
+        return this.device.gatt.getPrimaryService('e7810a71-73ae-499d-8c15-faa9aef0c3f2')
             .then(service => {
                 alert('got service');
-                service.getCharacteristic(0xbef8d6c9);
+                service.getCharacteristic('bef8d6c9-9c21-4c9e-b632-bd58c1009f9f');
             })
             .then(characteristic => {
                 alert('got characteristic');
