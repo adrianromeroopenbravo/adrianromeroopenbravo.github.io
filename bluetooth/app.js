@@ -17,3 +17,16 @@ document.getElementById('print').addEventListener('click', event => {
         alert(error);
     });
 });
+
+document.getElementById('printreceipt').addEventListener('click', event => {
+    
+    var bltprinter = new OB.BluetoothPrinter();
+
+    bltprinter.print(document.getElementById('datareceipt').value)
+    .then(_ => {
+        console.log("success");
+    })
+    .catch(error => { 
+        alert(error);
+    });
+});

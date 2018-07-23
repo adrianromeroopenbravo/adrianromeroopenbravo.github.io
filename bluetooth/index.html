@@ -15,13 +15,156 @@
 </div>
 
 <div>
-    <input type="button" id="request" value="Request" />
+    <input type="button" id="request" value="Request" />    
+</div>
+<div> 
     <input id="datainput" type="text"  value="Printing sample data"/>
     <input type="button" id="print" value="Print" />
+</div>
+<div>
+<!--    
+    <textarea id="datareceipt" style="width: 800px; height: 400px;"><?xml version="1.0" encoding="UTF-8"?>
+<output>
+    <ticket>
+    <line>
+        <image>ticket-image.png</image>
+    </line>
+    <line>
+        
+        <text align="center" length="42">SALES RECEIPT</text>
+    </line>
+    <line></line>
+    <line>
+        <text align="center" length="42">You have been served by</text>
+    </line>
+    <line>
+        <text align="center" length="42">Openbravo Web POS</text>
+    </line>
+    <line></line>
+    <line>
+        <text align="left" length="22">Receipt</text>
+        <text>VBS1/0000113</text>
+    </line>
+    <line>
+        <text align="left" length="22">Date time</text>
+        <text>23-07-2018</text>
+        <text> </text>
+        
+        <text>12:32</text>
+    </line>
+    <line>
+        <text align="left" length="22">Cashier POS</text>
+        <text>Vall Blanca Store User</text>
+        <text>, </text>
+        <text>VBS POS Terminal</text>
+    </line>
+    <line>
+        <text align="left" length="22">Tax ID</text>
+        <text>B87654321</text>
+    </line>
+    <line></line>
+    <line>
+        <text align ="left" length="21">Item</text>
+        <text align ="right" length="5">#</text>
+        <text align ="right" length="8">Price</text>
+        <text align ="right" length="8">Total</text>
+    </line>
+    <line>
+        <text>------------------------------------------</text>
+    </line>
+    
+        <line>
+        <text align ="left" length="21">Avalanche transceiver</text>
+        <text align ="right" length="5">1</text>
+        <text align ="right" length="8">150.50</text>
+    
+        <text align ="right" length="8">150.50</text>  
+    
+        </line>
+    
+    
+    <line></line>
+    <line size="1">
+        <text align ="left" length="25">TOTAL EUR</text>
+        <text align ="right" length="14">150.50</text>
+    </line>   
+        
+        <line>
+            <text align="left" length="20">Cash</text>
+            <text align="right" length="20">150.50</text>
+        </line>
+            
+    
+    <line>
+        <text align="left" length="20">Change</text>
+        <text align="right" length="20">0.00</text>
+    </line>
+    <line></line>
+    <line size="1">
+        
+        
+            <text align="center" length="42">You have paid</text>
+        
+        
+    </line>
+    <line>
+        <text align="center" length="42">Thanks for your visit</text>
+    </line>
+    <line></line>
+    <line>
+        <text align ="left" length="12">Breakdown</text>
+        <text align ="left" length="12">Base</text>
+        <text align ="left" length="12">TAX</text>
+    </line>
+    <line>
+        <text>------------------------------------------</text>
+    </line>
+    
+        <line>
+        <text align ="left" length="12">21.00%</text>
+        <text align ="left" length="12">124.38</text>
+        <text align ="left" length="12">26.12</text>
+        </line>
+    
+    <line>
+        <text>------------------------------------------</text>
+    </line>
+    <line>
+        <text align ="left" length="24">Total.</text>
+        <text align ="left" length="12">26.12</text>
+    </line>
+
+    <line>
+        <barcode type="CODE128" position="left">VBS1/0000113</barcode>
+    </line>
+
+    </ticket>
+</output></textarea>
+-->
+<textarea id="datareceipt" style="width: 800px; height: 400px;"><?xml version="1.0" encoding="UTF-8"?>
+    <output>
+        <ticket>
+        <line>
+            <text align="center" length="42">SALES RECEIPT</text>
+        </line>
+        <line></line>
+        <line>
+            <text align="center" length="42">You have been served by</text>
+        </line>
+        <line>
+            <text align="center" length="42">Openbravo Web POS</text>
+        </line>
+        </ticket>
+    </output></textarea>
+    
+</div>
+<div>            
+    <input type="button" id="printreceipt" value="Print receipt" />            
 </div>
 
 <script src="./bluetooth.js"></script>
 <script src="./escpos.js"></script>
+<script src="./bluetoothprinter.js"></script>
 <script src="./app.js"></script>
 
 </body>

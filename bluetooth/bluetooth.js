@@ -6,13 +6,17 @@ class BluetoothPrinter {
     }
 
     request() {
-        let options = {
+    
+        if (!navigator.bluetooth) {
+            return Promise.reject('Bluetooth not supported.');
+        }
+
+        return navigator.bluetooth.requestDevice({
             // "filters": [{
             // }],
             optionalServices: ['e7810a71-73ae-499d-8c15-faa9aef0c3f2'],
             acceptAllDevices: true,
-        };
-        return navigator.bluetooth.requestDevice(options)
+        })
             .then(device => {
                 this.device = device;
                 this.device.addEventListener('gattserverdisconnected', this.onDisconnected);
