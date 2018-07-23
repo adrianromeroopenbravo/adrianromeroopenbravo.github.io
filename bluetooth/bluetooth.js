@@ -49,20 +49,14 @@ class BluetoothPrinter {
     }
 
     printArray(data) {
-        var i, tmp, chunksize, result;
+        var i, result;
 
         result = Promise.resolve();
         console.log(data);
         for (i = 0; i < data.length; i += this.size) {
-            result = result.then(printArrayChunk(data.slice(i, this.size)));
+            result = result.then(this.characteristic.printValue(data.slice(i, this.size)));
         }
         return result;
-    }
-
-    printArrayChunk(data) {
-        return function() {
-            return characteristic.writeValue(data);
-        };
     }
 
     onDisconnected() {
