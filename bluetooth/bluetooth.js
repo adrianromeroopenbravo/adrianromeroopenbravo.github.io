@@ -27,6 +27,11 @@ class BluetoothPrinter {
         if (!this.device) {
             return Promise.reject('Device is not connected.');
         }
+
+        if (this.characteristic) {
+            return this.characteristic.writeValue(data);
+        }
+
         return this.device.gatt.connect()
         .then(server => {
             this.server = server;
@@ -35,11 +40,9 @@ class BluetoothPrinter {
         .then(service => {
             return service.getCharacteristic('bef8d6c9-9c21-4c9e-b632-bd58c1009f9f');
         })
-        .then(characteristic => {      
+        .then(characteristic => {    
+            this.characteristic = characteristic;
             characteristic.writeValue(data);
-        })
-        .then(_ => {
-            return this.server.disconnect();
         });
     }
 
@@ -53,6 +56,9 @@ class BluetoothPrinter {
     }
 
     onDisconnected() {
+        this.device = null;
+        this.characteristic = null;
+        this.server = null;
         console.log('Device is disconnected.');
     }
 }
