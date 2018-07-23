@@ -61,7 +61,7 @@ class BluetoothPrinter {
 
     printChunk(chunk) {
         return function () {
-            this.characteristic.writeValue(chunk)
+            return this.characteristic.writeValue(chunk)
         }.bind(this);
     }
 
