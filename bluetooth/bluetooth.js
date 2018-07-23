@@ -54,7 +54,7 @@ class BluetoothPrinter {
         result = Promise.resolve();
         console.log(data);
         for (i = 0; i < data.length; i += this.size) {
-            result = result.then(this.characteristic.printValue(data.slice(i, this.size)));
+            result = result.then(this.characteristic.writeValue(data.slice(i, this.size)));
         }
         return result;
     }
