@@ -1,4 +1,4 @@
-let bluetoothPrinter = new BluetoothPrinter();
+var bltprinter = new OB.BluetoothPrinter();
 
 document.getElementById('request').addEventListener('click', event => {
   bluetoothPrinter.request()
@@ -9,16 +9,11 @@ document.getElementById('request').addEventListener('click', event => {
 
 document.getElementById('print').addEventListener('click', event => {
     
-    bluetoothPrinter.printText(document.getElementById('datainput').value)
-    .then(_ => {
-        bluetoothPrinter.printArray(ESCPOS.NEW_LINE)
-    })
+    bltprinter.rawprint(document.getElementById('datainput').value)
     .catch(error => { 
         alert(error);
     });
 });
-
-var bltprinter = new OB.BluetoothPrinter();
 
 document.getElementById('printreceipt').addEventListener('click', event => {
     bltprinter.print(document.getElementById('datareceipt').value)

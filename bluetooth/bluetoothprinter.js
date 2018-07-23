@@ -8,6 +8,19 @@ OB.BluetoothPrinter = function() {
     this.bluetoothprinter = new BluetoothPrinter();
 };
 
+OB.BluetoothPrinter.prototype.rawprint = function(txt) {
+
+    if (this.bluetoothprinter.device) {
+        return this.bluetoothprinter.printText(output);
+    } else {
+        return this.bluetoothprinter.request()
+        .then(function() {
+            this.bluetoothprinter.print(encoder.encode(txt))
+        }.bind(this));
+    }   
+};
+
+
 OB.BluetoothPrinter.prototype.print = function(doc) {
 
     var parser = new DOMParser();
