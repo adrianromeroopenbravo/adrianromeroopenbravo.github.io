@@ -1,6 +1,7 @@
 class BluetoothPrinter {
 
     constructor() {
+        this.size = 20;
         this.device = null;
         this.onDisconnected = this.onDisconnected.bind(this);
     }
@@ -29,8 +30,7 @@ class BluetoothPrinter {
         }
 
         if (this.characteristic) {
-            console.log(data);
-            return this.characteristic.writeValue(data);
+            return this.printArray(data);
         }
 
         return this.device.gatt.connect()
@@ -43,18 +43,26 @@ class BluetoothPrinter {
         })
         .then(characteristic => {    
             this.characteristic = characteristic;
-            console.log(data);
-            characteristic.writeValue(data);
+            this.printArray(data);
+
         });
     }
 
-    printText(text) {
-        let encoder = new TextEncoder('utf-8');         
-        return this.print(encoder.encode(text));        
+    printArray(data) {
+        var i, tmp, chunksize, result;
+
+        result = Promise.resolve();
+        console.log(data);
+        for (i = 0; i < data.length; i += this.size) {
+            result = result.then(printArrayChunk(data.slice(i, this.size)));
+        }
+        return result;
     }
 
-    printArray(list) {     
-        return this.print(new Uint8Array(list));;        
+    printArrayChunk(data) {
+        return function() {
+            return characteristic.writeValue(data);
+        };
     }
 
     onDisconnected() {

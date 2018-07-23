@@ -15,6 +15,15 @@ document.getElementById('print').addEventListener('click', event => {
     });
 });
 
+document.getElementById('print2').addEventListener('click', event => {
+    
+    bltprinter.rawprint2(document.getElementById('datainput').value)
+    .catch(error => { 
+        alert(error);
+    });
+});
+
+
 document.getElementById('printreceipt').addEventListener('click', event => {
     bltprinter.print(document.getElementById('datareceipt').value)
     .then(_ => {

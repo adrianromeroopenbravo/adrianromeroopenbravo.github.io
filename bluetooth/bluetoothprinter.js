@@ -20,6 +20,17 @@ OB.BluetoothPrinter.prototype.rawprint = function(txt) {
     }   
 };
 
+OB.BluetoothPrinter.prototype.rawprint2 = function(txt) {
+
+    if (this.bluetoothprinter.device) {
+        return this.bluetoothprinter.printText(txt);
+    } else {
+        return this.bluetoothprinter.request()
+        .then(function() {
+            this.bluetoothprinter.print(append(encoder.encode(txt), ESCPOS.NEW_LINE));
+        }.bind(this));
+    }   
+};
 
 OB.BluetoothPrinter.prototype.print = function(doc) {
 
