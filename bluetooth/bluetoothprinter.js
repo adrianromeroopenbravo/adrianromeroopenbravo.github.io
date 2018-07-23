@@ -11,7 +11,7 @@ OB.BluetoothPrinter = function() {
 OB.BluetoothPrinter.prototype.rawprint = function(txt) {
 
     if (this.bluetoothprinter.device) {
-        this.bluetoothprinter.print(encoder.encode(txt))
+        returnthis.bluetoothprinter.print(encoder.encode(txt))
     } else {
         return this.bluetoothprinter.request()
         .then(function() {
