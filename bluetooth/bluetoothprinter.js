@@ -11,7 +11,7 @@ OB.BluetoothPrinter = function() {
 OB.BluetoothPrinter.prototype.rawprint = function(txt) {
 
     if (this.bluetoothprinter.device) {
-        return this.bluetoothprinter.printText(output);
+        return this.bluetoothprinter.printText(txt);
     } else {
         return this.bluetoothprinter.request()
         .then(function() {
@@ -48,7 +48,6 @@ OB.BluetoothPrinter.prototype.processDOM = function(dom) {
     }.bind(this));
 
     if (output && output.length) {
-        console.log(output);
         if (this.bluetoothprinter.device) {
             return this.bluetoothprinter.printText(output);
         } else {

@@ -29,6 +29,7 @@ class BluetoothPrinter {
         }
 
         if (this.characteristic) {
+            console.log(data);
             return this.characteristic.writeValue(data);
         }
 
@@ -42,6 +43,7 @@ class BluetoothPrinter {
         })
         .then(characteristic => {    
             this.characteristic = characteristic;
+            console.log(data);
             characteristic.writeValue(data);
         });
     }
