@@ -11,7 +11,7 @@ OB.BluetoothPrinter = function() {
 OB.BluetoothPrinter.prototype.rawprint = function(txt) {
 
     if (this.bluetoothprinter.device) {
-        return this.bluetoothprinter.printText(txt);
+        this.bluetoothprinter.print(encoder.encode(txt))
     } else {
         return this.bluetoothprinter.request()
         .then(function() {
@@ -23,7 +23,7 @@ OB.BluetoothPrinter.prototype.rawprint = function(txt) {
 OB.BluetoothPrinter.prototype.rawprint2 = function(txt) {
 
     if (this.bluetoothprinter.device) {
-        return this.bluetoothprinter.printText(txt);
+        return this.bluetoothprinter.print(append(encoder.encode(txt), ESCPOS.NEW_LINE));
     } else {
         return this.bluetoothprinter.request()
         .then(function() {
