@@ -34,14 +34,14 @@ OB.BluetoothPrinter.prototype.processDOM = function(dom) {
         }
     }.bind(this));
 
-    if (output) {
+    if (output && output.length) {
         console.log(output);
         if (this.bluetoothprinter.device) {
             return this.bluetoothprinter.printText(output);
         } else {
             return this.bluetoothprinter.request()
             .then(function() {
-                this.bluetoothprinter.printText(output)
+                this.bluetoothprinter.print(output)
             }.bind(this));
         }   
     } else {
@@ -50,10 +50,10 @@ OB.BluetoothPrinter.prototype.processDOM = function(dom) {
 };
 
 OB.BluetoothPrinter.prototype.processOutput = function(dom) {
-    var printerdocs = '';
+    var printerdocs = new Uint8Array();
     Array.from(dom.children).forEach(function(el) {
         if (el.nodeName === 'ticket') {
-            printerdocs += this.processTicket(el);
+            printerdocs = append(printerdocs, this.processTicket(el));
         }
     }.bind(this));
     return printerdocs;
@@ -61,10 +61,11 @@ OB.BluetoothPrinter.prototype.processOutput = function(dom) {
 
 
 OB.BluetoothPrinter.prototype.processTicket = function(dom) {
-    var printerdoc = '';
+    var printerdoc = new Uint8Array();
     Array.from(dom.children).forEach(function(el) {
         if (el.nodeName === 'line') {
-            printerdoc += this.processLine(el) + '\n';
+            printerdoc = append(printerdoc, this.processLine(el));
+            printerdoc = append(printerdoc, ESCPOS.NEW_LINE);
         }
     }.bind(this));
 
@@ -73,7 +74,7 @@ OB.BluetoothPrinter.prototype.processTicket = function(dom) {
 };
 
 OB.BluetoothPrinter.prototype.processLine = function(dom) {
-    var line = '';
+    var line = new Uint8Array();
 
     Array.from(dom.children).forEach(function(el) {
         if (el.nodeName === 'text') {
@@ -88,11 +89,11 @@ OB.BluetoothPrinter.prototype.processLine = function(dom) {
             } else {
                 txt = padEnd(txt, len);
             }
-            line += txt;
+            line = append(line, encoder.encode(txt));
         }
     }.bind(this));
 
-    return padEnd(line, this.columns);    
+    return line;
 };
 
 function padStart(txt, length) {
@@ -117,5 +118,15 @@ function padCenter(txt, length) {
     var midlength = (length + txt.length) / 2; 
     return padEnd(padStart(txt, midlength), length);
 }
+
+
+ function append (a1, a2) {
+    var tmp = new Uint8Array(a1.length + a2.length);
+    tmp.set(a1, 0);
+    tmp.set(a2, a1.byteLength);
+    return tmp;   
+ }
+
+ var encoder = new TextEncoder('utf-8');  
 
 }());

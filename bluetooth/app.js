@@ -18,10 +18,9 @@ document.getElementById('print').addEventListener('click', event => {
     });
 });
 
-document.getElementById('printreceipt').addEventListener('click', event => {
-    
-    var bltprinter = new OB.BluetoothPrinter();
+var bltprinter = new OB.BluetoothPrinter();
 
+document.getElementById('printreceipt').addEventListener('click', event => {
     bltprinter.print(document.getElementById('datareceipt').value)
     .then(_ => {
         console.log("success");
