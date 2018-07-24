@@ -4,7 +4,7 @@
 window.OB = window.OB || {};
 
 OB.BluetoothPrinter = function() {
-    this.columns = 42;
+    this.columns = 32;
     this.bluetoothprinter = new BluetoothPrinter();
 };
 
@@ -60,7 +60,7 @@ OB.BluetoothPrinter.prototype.processDOM = function(dom) {
 
     if (output && output.length) {
         if (this.bluetoothprinter.device) {
-            return this.bluetoothprinter.printText(output);
+            return this.bluetoothprinter.print(output);
         } else {
             return this.bluetoothprinter.request()
             .then(function() {
