@@ -1,28 +1,11 @@
 var bltprinter = new OB.BluetoothPrinter();
 
 document.getElementById('request').addEventListener('click', event => {
-  bluetoothPrinter.request()
-  .catch(error => {
-      alert(error);
-    });
-});
-
-document.getElementById('print').addEventListener('click', event => {
-    
-    bltprinter.rawprint(document.getElementById('datainput').value)
-    .catch(error => { 
+    bltprinter.request()
+    .catch(error => {
         alert(error);
     });
 });
-
-document.getElementById('print2').addEventListener('click', event => {
-    
-    bltprinter.rawprint2(document.getElementById('datainput').value)
-    .catch(error => { 
-        alert(error);
-    });
-});
-
 
 document.getElementById('printreceipt').addEventListener('click', event => {
     bltprinter.print(document.getElementById('datareceipt').value)
