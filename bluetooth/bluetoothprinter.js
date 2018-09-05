@@ -2,8 +2,8 @@
 
     window.OB = window.OB || {};
   
-    function padStart(txt, length) {
-      var result = txt.padStart(length);
+    function padStart(txt, length, character) {
+      var result = txt.padStart(length, character);
       if (result.length > length) {
         return result.substring(result.length - length);
       } else {
@@ -11,8 +11,8 @@
       }
     }
   
-    function padEnd(txt, length) {
-      var result = txt.padEnd(length);
+    function padEnd(txt, length, character) {
+      var result = txt.padEnd(length, character);
       if (result.length > length) {
         return result.substring(0, length);
       } else {
@@ -20,9 +20,9 @@
       }
     }
   
-    function padCenter(txt, length) {
+    function padCenter(txt, length, character) {
       var midlength = (length + txt.length) / 2;
-      return padEnd(padStart(txt, midlength), length);
+      return padEnd(padStart(txt, midlength, character), length, character);
     }
   
   
@@ -94,6 +94,8 @@
         if (el.nodeName === 'line') {
           printerdoc = append(printerdoc, this.processLine(el));
           printerdoc = append(printerdoc, OB.ESCPOS.NEW_LINE);
+        } else if (el.nodeName === 'barcode') {
+          printerdoc = append(printerdoc, this.processBarcode(el));
         }
       }.bind(this));
   
@@ -122,4 +124,36 @@
       return line;
     };
   
+    OB.BluetoothPrinter.prototype.processBarcode = function (dom) {
+      var line = new Uint8Array();
+      var position = el.getAttribute('position');
+      var type = el.getAttribute('type');
+      var barcode = el.textContent;
+
+      line = append(line, OB.ESCPOS.CENTER_JUSTIFICATION);
+
+      line = append(line, OB.ESCPOS.NEW_LINE);
+      line = append(line, OB.ESCPOS.BAR_HEIGHT);
+      line = append(line, position === 'none' 
+        ? OB.ESCPOS.POSITION_NONE
+        : OB.ESCPOS.POSITION_DOWN);
+      
+      if (type === 'EAN13'){
+        line = append(line, OB.ESCPOS.BAR_HRIFONT1);
+        line = append(line, OB.ESCPOS.BAR_CODE02);
+
+        barcode = padStart(barcode, 13, '0');
+        barcode = barcode.substring(0, 12);
+        line = append(line, encoder.encode(barcode));
+        line = append(line, new Uint8Array([0x00]));
+        
+        line = append(line, OB.ESCPOS.NEW_LINE);
+      } else if (type === 'CODE128') {
+
+      }
+
+      line = append(line, OB.ESCPOS.LEFT_JUSTIFICATION);
+      return line;
+    };
+
   }());
