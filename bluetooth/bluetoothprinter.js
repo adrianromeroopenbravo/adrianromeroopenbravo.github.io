@@ -124,7 +124,7 @@
       return line;
     };
   
-    OB.BluetoothPrinter.prototype.processBarcode = function (dom) {
+    OB.BluetoothPrinter.prototype.processBarcode = function (el) {
       var line = new Uint8Array();
       var position = el.getAttribute('position');
       var type = el.getAttribute('type');
