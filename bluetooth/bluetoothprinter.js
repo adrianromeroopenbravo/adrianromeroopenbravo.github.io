@@ -135,8 +135,8 @@
       line = append(line, OB.ESCPOS.NEW_LINE);
       line = append(line, OB.ESCPOS.BAR_HEIGHT);
       line = append(line, position === 'none' 
-        ? OB.ESCPOS.POSITION_NONE
-        : OB.ESCPOS.POSITION_DOWN);
+        ? OB.ESCPOS.BAR_POSITIONNONE
+        : OB.ESCPOS.BAR_POSITIONDOWN);
       
       if (type === 'EAN13'){
         line = append(line, OB.ESCPOS.BAR_HRIFONT1);
