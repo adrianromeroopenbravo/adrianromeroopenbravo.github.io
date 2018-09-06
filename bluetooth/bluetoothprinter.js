@@ -24,8 +24,7 @@
       var midlength = (length + txt.length) / 2;
       return padEnd(padStart(txt, midlength, character), length, character);
     }
-  
-  
+
     function append(a1, a2) {
       var tmp = new Uint8Array(a1.length + a2.length);
       tmp.set(a1, 0);
@@ -146,12 +145,25 @@
         barcode = barcode.substring(0, 12);
         line = append(line, encoder.encode(barcode));
         line = append(line, new Uint8Array([0x00]));
-        
-        line = append(line, OB.ESCPOS.NEW_LINE);
       } else if (type === 'CODE128') {
+        if (barcode.length > 12) {
+          line = append(line, OB.ESCPOS.BAR_WIDTH );
+        }
+        line = append(line, OB.ESCPOS.BAR_HRIFONT1);
+        line = append(line, OB.ESCPOS.BAR_CODE128);
 
+        var barcode128 = OB.ESCPOS.transCode128(barcode);        
+        line = append(line, new Uint8Array([barcode128.length + 2]));    
+        line = append(line, OB.ESCPOS.BAR_CODE128TYPE);
+        line = append(line, barcode128);
+        line = append(line, new Uint8Array([0x00]));
+      } else { // Unknown barcode type
+        line = append(line, encoder.encode(type));
+        line = append(line, encoder.encode(': '));
+        line = append(line, encoder.encode(barcode));
       }
 
+      line = append(line, OB.ESCPOS.NEW_LINE);
       line = append(line, OB.ESCPOS.LEFT_JUSTIFICATION);
       return line;
     };
