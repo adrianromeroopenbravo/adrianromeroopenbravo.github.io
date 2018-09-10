@@ -109,6 +109,9 @@
           var txt = el.textContent;
           var len = parseInt(el.getAttribute('length'), 10) || txt.length;
           var align = el.getAttribute('align');
+          var bold = el.getAttribute('bold');
+          var uderline = el.getAttribute('underline');
+
           if (align === 'right') {
             txt = padStart(txt, len);
           } else if (align === 'center') {
@@ -116,7 +119,21 @@
           } else {
             txt = padEnd(txt, len);
           }
+          
+          if (bold === 'true') {
+            line = append(line, OB.ESCPOS.BOLD_SET);
+          }
+          if (uderline === 'true') {
+            line = append(line, OB.ESCPOS.UNDERLINE_SET);
+          }
           line = append(line, encoder.encode(txt));
+          if (bold === 'true') {
+            line = append(line, OB.ESCPOS.BOLD_RESET);
+          }
+          if (uderline === 'true') {
+            line = append(line, OB.ESCPOS.UNDERLINE_RESET);
+          }
+
         }
       }.bind(this));
   
