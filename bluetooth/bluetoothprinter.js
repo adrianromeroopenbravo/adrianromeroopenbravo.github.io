@@ -134,9 +134,9 @@
       line = append(line, OB.ESCPOS.NEW_LINE);
       line = append(line, OB.ESCPOS.BAR_HEIGHT);
       if (position === 'none') {
-        append(line, OB.ESCPOS.BAR_POSITIONNONE);
+        line = append(line, OB.ESCPOS.BAR_POSITIONNONE);
       } else {
-        append(line, OB.ESCPOS.BAR_POSITIONDOWN);
+        line = append(line, OB.ESCPOS.BAR_POSITIONDOWN);
       }
       
       if (type === 'EAN13'){
