@@ -20,7 +20,7 @@
       RIGHT_JUSTIFICATION: new Uint8Array([0x1B, 0x61, 0x02]),
 
       BAR_HEIGHT: new Uint8Array([0x1D, 0x68, 0x40]),
-      BAR_WIDTH4: new Uint8Array([0x1D, 0x77, 0x04]),
+      BAR_WIDTH3: new Uint8Array([0x1D, 0x77, 0x03]),
       BAR_WIDTH2: new Uint8Array([0x1D, 0x77, 0x02]),
       BAR_WIDTH1: new Uint8Array([0x1D, 0x77, 0x01]),
       BAR_POSITIONDOWN: new Uint8Array([0x1D, 0x48, 0x02]),

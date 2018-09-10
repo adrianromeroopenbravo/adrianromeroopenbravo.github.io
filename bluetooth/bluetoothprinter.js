@@ -140,7 +140,7 @@
       }
       
       if (type === 'EAN13'){
-        line = append(line, OB.ESCPOS.BAR_WIDTH4);
+        line = append(line, OB.ESCPOS.BAR_WIDTH3);
         
         line = append(line, OB.ESCPOS.BAR_HRIFONT1);
         line = append(line, OB.ESCPOS.BAR_CODE02);
@@ -150,12 +150,12 @@
         line = append(line, encoder.encode(barcode));
         line = append(line, new Uint8Array([0x00]));
       } else if (type === 'CODE128') {
-        if (barcode.length > 13) {
+        if (barcode.length > 14) {
           line = append(line, OB.ESCPOS.BAR_WIDTH1);
-        } else if (barcode.length > 7) {
+        } else if (barcode.length > 8) {
           line = append(line, OB.ESCPOS.BAR_WIDTH2);
         } else {
-          line = append(line, OB.ESCPOS.BAR_WIDTH4);
+          line = append(line, OB.ESCPOS.BAR_WIDTH3);
         }
         line = append(line, OB.ESCPOS.BAR_HRIFONT1);
         line = append(line, OB.ESCPOS.BAR_CODE128);
