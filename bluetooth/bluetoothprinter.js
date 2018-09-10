@@ -133,11 +133,15 @@
 
       line = append(line, OB.ESCPOS.NEW_LINE);
       line = append(line, OB.ESCPOS.BAR_HEIGHT);
-      line = append(line, position === 'none' 
-        ? OB.ESCPOS.BAR_POSITIONNONE
-        : OB.ESCPOS.BAR_POSITIONDOWN);
+      if (position === 'none') {
+        append(line, OB.ESCPOS.BAR_POSITIONNONE);
+      } else {
+        append(line, OB.ESCPOS.BAR_POSITIONDOWN);
+      }
       
       if (type === 'EAN13'){
+        line = append(line, OB.ESCPOS.BAR_WIDTH4);
+        
         line = append(line, OB.ESCPOS.BAR_HRIFONT1);
         line = append(line, OB.ESCPOS.BAR_CODE02);
 
@@ -146,8 +150,12 @@
         line = append(line, encoder.encode(barcode));
         line = append(line, new Uint8Array([0x00]));
       } else if (type === 'CODE128') {
-        if (barcode.length > 12) {
-          line = append(line, OB.ESCPOS.BAR_WIDTH );
+        if (barcode.length > 13) {
+          line = append(line, OB.ESCPOS.BAR_WIDTH1);
+        } else if (barcode.length > 7) {
+          line = append(line, OB.ESCPOS.BAR_WIDTH2);
+        } else {
+          line = append(line, OB.ESCPOS.BAR_WIDTH4);
         }
         line = append(line, OB.ESCPOS.BAR_HRIFONT1);
         line = append(line, OB.ESCPOS.BAR_CODE128);
