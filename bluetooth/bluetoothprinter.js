@@ -167,7 +167,7 @@
         line = append(line, encoder.encode(barcode));
         line = append(line, new Uint8Array([0x00]));
       } else if (type === 'CODE128') {
-        if (barcode.length > 16) {
+        if (barcode.length > 14) {
           line = append(line, OB.ESCPOS.BAR_WIDTH1);
         } else if (barcode.length > 8) {
           line = append(line, OB.ESCPOS.BAR_WIDTH2);
