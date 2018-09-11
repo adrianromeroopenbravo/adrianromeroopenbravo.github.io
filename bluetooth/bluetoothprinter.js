@@ -103,6 +103,17 @@
   
     OB.BluetoothPrinter.prototype.processLine = function (dom) {
       var line = new Uint8Array();
+      var fontsize = dom.getAttribute('size');
+
+      if (fontsize === '1') {
+        line = append(line, OB.ESCPOS.CHAR_SIZE_1);
+      } else if (fontsize === '2') {
+        line = append(line, OB.ESCPOS.CHAR_SIZE_2);
+      } else if (fontsize === '3') {
+        line = append(line, OB.ESCPOS.CHAR_SIZE_3);
+      } else {
+        line = append(line, OB.ESCPOS.CHAR_SIZE_0);
+      }
   
       Array.from(dom.children).forEach(function (el) {
         if (el.nodeName === 'text') {
