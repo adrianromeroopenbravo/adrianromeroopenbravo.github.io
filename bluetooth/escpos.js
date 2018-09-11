@@ -19,6 +19,8 @@
     LEFT_JUSTIFICATION: new Uint8Array([0x1B, 0x61, 0x00]),
     RIGHT_JUSTIFICATION: new Uint8Array([0x1B, 0x61, 0x02]),
 
+    IMAGE_HEADER: new Uint8Array([0x1D, 0x76, 0x30, 0x03]),
+
     BAR_HEIGHT: new Uint8Array([0x1D, 0x68, 0x40]),
     BAR_WIDTH3: new Uint8Array([0x1D, 0x77, 0x03]),
     BAR_WIDTH2: new Uint8Array([0x1D, 0x77, 0x02]),
@@ -223,6 +225,51 @@
       } else {
         return new Uint8Array();
       }
+    },
+
+    transImage: function(imagedata) {
+
+      function isBlack(x, y) {
+        if (x <0 || x >= imagedata.width || y < 0 || y >= imagedata.height) {
+          return true;
+        }
+        var index = y * imagedata.width * 4 + x * 4;
+        var luminosity = 0;
+        luminosity += 0.30 * imagedata.data[index];     // RED luminosity
+        luminosity += 0.59 * imagedata.data[index + 1]; // GREEN luminosity
+        luminosity += 0.11 * imagedata.data[index + 2]; // BLUE luminosity
+        luminosity = 1 - luminosity / 255;
+        luminosity *= imagedata.data[index + 3] / 255;  // ALPHA factor
+
+        return luminosity >= 0.5;
+      }; 
+
+      var result = [];
+      var i, j, p, d;
+
+      var width = (imagedata.width + 7) / 8;
+      var height = imagedata.height;
+
+      result.push(width & 255);
+      result.push(width >> 8);
+      result.push(height & 255);
+      result.push(height >> 8);
+
+      // Raw data
+      for (i = 0; i < imagedata.height; i++) {
+        for (j = 0; j < imagedata.width; j = j + 8) {
+          p = 0x00;
+          for (d = 0; d < 8; d++) {
+            p = p << 1;
+            if (isBlack(j + d, i)) {
+              p = p | 0x01;
+            }
+          }
+          result.push(p);
+        }
+      }
+
+      return new Uint8Array(result);   
     }
   };
 }());

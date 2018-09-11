@@ -32,11 +32,30 @@
     return tmp;
   }
 
+  function getImageData(data) {
+    return new Promise(function (resolve, reject) {
+        var img = new Image();
+        img.src = data.image;
+        img.onload = function () {
+            var canvas =  document.createElement('canvas');
+            var ctx = canvas.getContext('2d');        
+            ctx.drawImage(img, 0, 0);
+            img.style.display = 'none';
+            data.imagedata = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            resolve(data);
+        };
+        img.onerror = function (ev) {
+            reject(ev);
+        }
+    });
+  }
+
   var encoder = new TextEncoder('utf-8');
 
   OB.BluetoothPrinter = function () {
     this.columns = 32;
     this.bluetooth = new OB.Bluetooth();
+    this.images = {};
   };
 
   OB.BluetoothPrinter.prototype.request = function () {
@@ -95,6 +114,8 @@
         printerdoc = append(printerdoc, OB.ESCPOS.NEW_LINE);
       } else if (el.nodeName === 'barcode') {
         printerdoc = append(printerdoc, this.processBarcode(el));
+      } else if (el.nodeName === 'image') {
+        printerdoc = append(printerdoc, this.processImage(el));
       }
     }.bind(this));
 
@@ -204,4 +225,28 @@
     return line;
   };
 
+  OB.BluetoothPrinter.prototype.registerImage = function (imageurl) {
+    Promise.resolve({image: imageurl})
+    .then(getImageData)
+    .then(function (result) {
+        this.images[imageurl] = {
+          imagedata: result.imagedata
+        };
+    }.bind(this));    
+  };
+
+  OB.BluetoothPrinter.prototype.processImage = function (el) {
+    var line = new Uint8Array();
+    var data = this.images[el.textContent];
+
+    if (data) {
+      if (!data.rawdata) {
+        data.rawdata = OB.ESCPOS.transImage(data.imagedata);
+      }
+      line = append(line, OB.ESCPOS.IMAGE_HEADER);
+      line = append(line, data.rawdata);
+    }
+
+    return line;
+  };
 }());

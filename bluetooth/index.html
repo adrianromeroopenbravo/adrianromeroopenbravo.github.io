@@ -141,6 +141,7 @@
 <textarea id="datareceipt" style="width: 800px; height: 400px;"><?xml version="1.0" encoding="UTF-8"?>
     <output>
         <ticket>
+            <image>ticket-image.png</image>
             <line size="1">
                 <text>Size 1</text>
             </line>
@@ -167,11 +168,16 @@
 <div>            
     <input type="button" id="printreceipt" value="Print receipt" />            
 </div>
+<div>            
+    <input type="button" id="imagemanipulation" value="Image manipulation" />            
+</div>
+<canvas id="canvas"></canvas>
 
 <script src="./bluetooth.js"></script>
 <script src="./escpos.js"></script>
 <script src="./bluetoothprinter.js"></script>
 <script src="./app.js"></script>
+
 
 </body>
 </html>
