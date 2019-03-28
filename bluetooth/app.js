@@ -2,13 +2,24 @@ var bltprinter = new OB.BluetoothPrinter();
 bltprinter.registerImage('ticket-image.png');
 
 document.getElementById('usbrequest').addEventListener('click', event => {
-    navigator.usb.requestDevice({ filters: [{ vendorId: 0x04B8 }] })
-    .then(device => {
-      console.log(device.productName);      // EPSON
-      console.log(device.manufacturerName); // TMT88V
-      console.dir(device);
+    var device;
+    navigator.usb.requestDevice({ filters: [
+        { vendorId: 0x04B8, productId: 0x0202 } // Epson TM-T88V
+    ] })
+    .then(selectedDevice => {
+        device = selectedDevice;
+        console.log(device.productName);      // EPSON
+        console.log(device.manufacturerName); // TMT88V
+        console.dir(device);
+        return device.open();
     })
+    .then(() => device.selectConfiguration(1)) // Select configuration #1 for the device.
+    .then(() => device.claimInterface(0)) // Request exclusive control over interface #1.
+    .then(() => device.transferOut(0, 'ewrqwrqwrqwrwq\nfasdfsf\n')) // Waiting for 64 bytes of data from endpoint #5.
     .catch(error => { console.log(error); });
+
+
+
 });
 
 document.getElementById('request').addEventListener('click', event => {
