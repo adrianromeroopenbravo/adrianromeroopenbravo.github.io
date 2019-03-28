@@ -16,16 +16,16 @@ document.getElementById('usbrequest').addEventListener('click', event => {
     })
     .then(() => {
         console.log('Configuring');
-        device.selectConfiguration(1); // Select configuration #1 for the device.
+        return device.selectConfiguration(1); // Select configuration #1 for the device.
     })
     .then(() => {
         console.log('claiming');
-        device.claimInterface(0); // Request exclusive control over interface #1.
+        return device.claimInterface(0); // Request exclusive control over interface #1.
     })
     .then(() => {
         console.log('transfering');
         var line = new Uint8Array([0x65, 0x65, 0x65, 0x65, 0x65, 0x65, 0x65, 0x0D, 0x0A,0x65, 0x65, 0x65, 0x65, 0x65, 0x65, 0x65, 0x0D, 0x0A]);
-        device.transferOut(0, line.buffer) // Waiting for 64 bytes of data from endpoint #5.
+        return device.transferOut(0, line.buffer) // Waiting for 64 bytes of data from endpoint #5.
     })
     .catch(error => { 
         console.dir(error);
