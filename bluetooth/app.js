@@ -8,15 +8,27 @@ document.getElementById('usbrequest').addEventListener('click', event => {
     ] })
     .then(selectedDevice => {
         device = selectedDevice;
+        window.device = device;
         console.log(device.productName);      // EPSON
         console.log(device.manufacturerName); // TMT88V
         console.dir(device);
         return device.open();
     })
-    .then(() => device.selectConfiguration(1)) // Select configuration #1 for the device.
-    .then(() => device.claimInterface(0)) // Request exclusive control over interface #1.
-    .then(() => device.transferOut(0, 'ewrqwrqwrqwrwq\nfasdfsf\n')) // Waiting for 64 bytes of data from endpoint #5.
-    .catch(error => { console.log(error); });
+    .then(() => {
+        console.log('Configuring');
+        device.selectConfiguration(1); // Select configuration #1 for the device.
+    })
+    .then(() => {
+        console.log('claiming');
+        device.claimInterface(0); // Request exclusive control over interface #1.
+    })
+    .then(() => {
+        console.log('transfering');
+        device.transferOut(0, 'ewrqwrqwrqwrwq\nfasdfsf\n') // Waiting for 64 bytes of data from endpoint #5.
+    })
+    .catch(error => { 
+        console.dir(error);
+    });
 
 
 
