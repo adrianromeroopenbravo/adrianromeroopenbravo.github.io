@@ -24,7 +24,10 @@ document.getElementById('usbrequest').addEventListener('click', event => {
     })
     .then(() => {
         console.log('transfering');
-        device.transferOut(0, 'ewrqwrqwrqwrwq\nfasdfsf\n') // Waiting for 64 bytes of data from endpoint #5.
+
+        var line = new Uint8Array([0x65, 0x65, 0x65, 0x65, 0x65, 0x65, 0x65, 0x0D, 0x0A,0x65, 0x65, 0x65, 0x65, 0x65, 0x65, 0x65, 0x0D, 0x0A]);
+
+        device.transferOut(0, line) // Waiting for 64 bytes of data from endpoint #5.
     })
     .catch(error => { 
         console.dir(error);
