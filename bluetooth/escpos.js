@@ -230,8 +230,8 @@
     transImage: function(imagedata) {
 
       function isBlack(x, y) {
-        if (x <0 || x >= imagedata.width || y < 0 || y >= imagedata.height) {
-          return true;
+        if (x < 0 || x >= imagedata.width || y < 0 || y >= imagedata.height) {
+          return false;
         }
         var index = y * imagedata.width * 4 + x * 4;
         var luminosity = 0;

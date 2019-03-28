@@ -1,6 +1,16 @@
 var bltprinter = new OB.BluetoothPrinter();
 bltprinter.registerImage('ticket-image.png');
 
+document.getElementById('usbrequest').addEventListener('click', event => {
+    navigator.usb.requestDevice({ filters: [{ vendorId: 0x04B8 }] })
+    .then(device => {
+      console.log(device.productName);      // EPSON
+      console.log(device.manufacturerName); // TMT88V
+      console.dir(device);
+    })
+    .catch(error => { console.log(error); });
+});
+
 document.getElementById('request').addEventListener('click', event => {
     bltprinter.request()
     .catch(error => {
