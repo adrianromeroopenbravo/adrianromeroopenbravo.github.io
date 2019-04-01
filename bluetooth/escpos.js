@@ -1,6 +1,6 @@
 /*
  ************************************************************************************
- * Copyright (C) 2018 Openbravo S.L.U.
+ * Copyright (C) 2018-2019 Openbravo S.L.U.
  * Licensed under the Openbravo Commercial License version 1.0
  * You may obtain a copy of the License at http://www.openbravo.com/legal/obcl.html
  * or in the legal folder of this module distribution.
@@ -42,7 +42,7 @@
     BAR_CODE128TYPE: new Uint8Array([0x7B, 0x42]),
 
     IMAGE_HEADER: new Uint8Array([0x1D, 0x76, 0x30, 0x03]),
-    
+
     PARTIAL_CUT_1: new Uint8Array([0x1B, 0x69]),
 
     transCode128: function (txt) {

@@ -3,7 +3,7 @@
 var printer;
 
 document.getElementById('selectbluetooth').addEventListener('click', event => {
-    var printer = new OB.WEBPrinter({
+    printer = new OB.WEBPrinter({
         WebDevice: OB.Bluetooth, 
         service: 'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
         characteristic: 'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f'

@@ -110,7 +110,7 @@
       //   printerdoc = append(printerdoc, this.processImage(el));        
       }
     }.bind(this));
-    printerdoc.append(printerdoc, OB.ESCPOS.PARTIAL_CUT_1);
+    printerdoc = append(printerdoc, OB.ESCPOS.PARTIAL_CUT_1);
     return printerdoc;
   };
 
