@@ -45,7 +45,7 @@
     }
 
     if (this.characteristic) {
-      result = this.printArray(data);
+      result = OB.ESCPOS.printArray(this.printChunk.bind(this), this.size, data);
     } else {
       result =  this.device.gatt.connect().then(function (server) {
         this.server = server;
