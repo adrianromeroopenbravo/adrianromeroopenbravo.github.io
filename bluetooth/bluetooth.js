@@ -11,8 +11,9 @@
 
 (function () {
 
-  var Bluetooth = function () {
-    this.size = 20;
+  var Bluetooth = function (info) {
+    this.info = info;
+    this.size = this.info.buffersize || 20;
     this.device = null;
     this.onDisconnected = this.onDisconnected.bind(this);
   };
@@ -29,7 +30,7 @@
 
     return navigator.bluetooth.requestDevice({
       filters: [
-        {services: ['e7810a71-73ae-499d-8c15-faa9aef0c3f2']}
+        {services: [this.info.service]}
       ]
     }).then(function (device) {
       this.device = device;
@@ -49,9 +50,9 @@
     } else {
       result =  this.device.gatt.connect().then(function (server) {
         this.server = server;
-        return server.getPrimaryService('e7810a71-73ae-499d-8c15-faa9aef0c3f2');
+        return server.getPrimaryService(this.info.service);
       }.bind(this)).then(function (service) {
-        return service.getCharacteristic('bef8d6c9-9c21-4c9e-b632-bd58c1009f9f');
+        return service.getCharacteristic(this.info.characteristic);
       }.bind(this)).then(function (characteristic) {
         this.characteristic = characteristic;
         return OB.ESCPOS.printArray(this.printChunk.bind(this), this.size, data);

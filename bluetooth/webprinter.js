@@ -43,9 +43,9 @@
 
   var encoder = new TextEncoder('utf-8');
 
-  var WEBPrinter = function (WEBDevice) {
+  var WEBPrinter = function (info) {
     this.columns = 32;
-    this.webdevice = new WEBDevice();
+    this.webdevice = new info.WebDevice(info);
   };
 
   WEBPrinter.prototype.connected = function () {

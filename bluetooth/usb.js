@@ -11,7 +11,8 @@
 
 (function () {
 
-    var USB = function () {
+    var USB = function (info) {
+      this.info = info;
       this.device = null;
       this.onDisconnected = this.onDisconnected.bind(this);
       if (!navigator.usb && navigator.usb.addEventListener) {
@@ -34,12 +35,12 @@
       }
 
       return navigator.usb.requestDevice({ filters: [
-          { vendorId: 0x04B8, productId: 0x0202 } // Epson TM-T88V
+          { vendorId: this.info.vendorId, productId: this.info.productId } 
       ] })
       .then(function (device)  {
           this.device = device;
-          console.log(device.productName);      // EPSON
-          console.log(device.manufacturerName); // TMT88V
+          console.log(device.productName);    
+          console.log(device.manufacturerName);
           return ;
       }.bind(this));
 
@@ -74,8 +75,8 @@
 
     USB.prototype.printChunk = function (chunk) {
       return function() {
-        console.log('tranfering');
-        return device.transferOut(1, chunk.buffer) // Waiting for 64 bytes of data from endpoint #5.
+        console.log('transfering');
+        return this.device.transferOut(1, chunk.buffer) // Waiting for 64 bytes of data from endpoint #5.
       }.bind(this);
     }
 
