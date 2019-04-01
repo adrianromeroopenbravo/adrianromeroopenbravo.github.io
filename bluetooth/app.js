@@ -1,16 +1,40 @@
-var bltprinter = new OB.WEBPrinter({
-    WebDevice: OB.Bluetooth, 
-    service: 'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
-    characteristic: 'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f'
+
+
+var printer;
+
+document.getElementById('selectbluetooth').addEventListener('click', event => {
+    var printer = new OB.WEBPrinter({
+        WebDevice: OB.Bluetooth, 
+        service: 'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
+        characteristic: 'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f'
+    });
+    // printer.registerImage('ticket-image.png');    
 });
-// bltprinter.registerImage('ticket-image.png');
 
-var usbprinter = new OB.WEBPrinter({
-    WebDevice: OB.USB,
-    vendorId: 0x04B8, 
-    productId: 0x0202
-}); // Epson TM-T88V
+document.getElementById('selectepsontmt').addEventListener('click', event => {
+    printer = new OB.WEBPrinter({
+        WebDevice: OB.USB,
+        vendorId: 0x04B8, 
+        productId: 0x0202
+    }); // Epson TM-T88V
+});
 
+document.getElementById('request').addEventListener('click', event => {
+    printer.request()
+    .catch(error => {
+        alert(error);
+    });
+});
+
+document.getElementById('printreceipt').addEventListener('click', event => {
+    printer.print(document.getElementById('datareceipt').value)
+    .then(_ => {
+        console.log("success");
+    })
+    .catch(error => { 
+        alert(error);
+    });
+});
 
 document.getElementById('usbtest').addEventListener('click', event => {
     var device;
@@ -43,39 +67,6 @@ document.getElementById('usbtest').addEventListener('click', event => {
     });
 });
 
-document.getElementById('usbrequest').addEventListener('click', event => {
-    usbprinter.request()
-    .catch(error => {
-        alert(error);
-    });    
-});
-
-document.getElementById('usbprint').addEventListener('click', event => {
-    usbprinter.print(document.getElementById('datareceipt').value)
-    .then(_ => {
-        console.log("success");
-    })
-    .catch(error => { 
-        alert(error);
-    });    
-});
-
-document.getElementById('request').addEventListener('click', event => {
-    bltprinter.request()
-    .catch(error => {
-        alert(error);
-    });
-});
-
-document.getElementById('printreceipt').addEventListener('click', event => {
-    bltprinter.print(document.getElementById('datareceipt').value)
-    .then(_ => {
-        console.log("success");
-    })
-    .catch(error => { 
-        alert(error);
-    });
-});
 
 document.getElementById('imagemanipulation').addEventListener('click', event => {
 

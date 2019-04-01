@@ -6,25 +6,17 @@
 
 </head>
 <body>
-    <h1>USB tests</h1>
-    <div>
-        <input type="button" id="usbtest" value="Test" />    
-    </div>
-    <div>            
-        <input type="button" id="usbrequest" value="Request" />            
-    </div>   
-    <div>            
-        <input type="button" id="usbprint" value="PrintReceipt" />            
-    </div>   
 
-<h1>Bluetooth tests</h1>
+<h1>Web Printer tests</h1>
 
 <div>
-   New Line
+    Selection printer: 
+    <input type="button" id="selectbluetooth" value="Bluetooth" />    
+    <input type="button" id="selectepsontmt" value="Epson TMT" />    
 </div>
-
 <div>
-    <input type="button" id="request" value="Request" />    
+    <input type="button" id="request" value="Request" />           
+    <input type="button" id="printreceipt" value="Print receipt" />               
 </div>
 
 <div>
@@ -174,12 +166,17 @@
     </output></textarea>
     
 </div>
+
+
+<h1>Tests</h1> 
 <div>            
-    <input type="button" id="printreceipt" value="Print receipt" />            
-</div>
+    <input type="button" id="usbprint" value="USB print sample" />            
+</div>   
+
 <div>            
     <input type="button" id="imagemanipulation" value="Image manipulation" />            
 </div>
+
 <canvas id="canvas"></canvas>
 
 <script src="./bluetooth.js"></script>
@@ -187,7 +184,6 @@
 <script src="./escpos.js"></script>
 <script src="./webprinter.js"></script>
 <script src="./app.js"></script>
-
 
 </body>
 </html>
