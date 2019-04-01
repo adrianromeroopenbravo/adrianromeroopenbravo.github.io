@@ -36,7 +36,7 @@
 
       return navigator.usb.requestDevice({ filters: [
           { vendorId: this.info.vendorId, productId: this.info.productId } 
-      ] })
+      ]})
       .then(function (device)  {
           this.device = device;
           console.log(device.productName);    
@@ -59,7 +59,7 @@
       }.bind(this))      
       .then(function() {
         console.log('claiming');
-        return this.device.claimInterface(0); // Request exclusive control over interface #1.
+        return this.device.claimInterface(0); // Request exclusive control over interface #0.
       }.bind(this))
       .then(function() {
         return OB.ESCPOS.printArray(this.printChunk.bind(this), 64, data);

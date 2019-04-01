@@ -72,7 +72,6 @@
     }
   };
 
-
   WEBPrinter.prototype.processDOM = function (dom) {
     var output;
 
@@ -99,7 +98,6 @@
     return printerdocs;
   };
 
-
   WEBPrinter.prototype.processTicket = function (dom) {
     var printerdoc = new Uint8Array();
     Array.from(dom.children).forEach(function (el) {
@@ -112,7 +110,7 @@
       //   printerdoc = append(printerdoc, this.processImage(el));        
       }
     }.bind(this));
-
+    printerdoc.append(printerdoc, OB.ESCPOS.PARTIAL_CUT_1);
     return printerdoc;
   };
 
@@ -159,7 +157,6 @@
         if (uderline === 'true') {
           line = append(line, OB.ESCPOS.UNDERLINE_RESET);
         }
-
       }
     }.bind(this));
 
@@ -218,7 +215,6 @@
     line = append(line, OB.ESCPOS.LEFT_JUSTIFICATION);
     return line;
   };
-
 
   WEBPrinter.prototype.registerImage = function (imageurl) {
     Promise.resolve({image: imageurl})

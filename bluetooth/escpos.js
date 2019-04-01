@@ -42,6 +42,8 @@
     BAR_CODE128TYPE: new Uint8Array([0x7B, 0x42]),
 
     IMAGE_HEADER: new Uint8Array([0x1D, 0x76, 0x30, 0x03]),
+    
+    PARTIAL_CUT_1: new Uint8Array([0x1B, 0x69]),
 
     transCode128: function (txt) {
 
