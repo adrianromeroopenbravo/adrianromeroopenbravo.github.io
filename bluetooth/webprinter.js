@@ -108,6 +108,8 @@
         printerdoc = append(printerdoc, OB.ESCPOS.NEW_LINE);
       } else if (el.nodeName === 'barcode') {
         printerdoc = append(printerdoc, this.processBarcode(el));
+      // } else if (el.nodeName === 'image') {
+      //   printerdoc = append(printerdoc, this.processImage(el));        
       }
     }.bind(this));
 
@@ -216,6 +218,32 @@
     line = append(line, OB.ESCPOS.LEFT_JUSTIFICATION);
     return line;
   };
+
+
+  WEBPrinter.prototype.registerImage = function (imageurl) {
+    Promise.resolve({image: imageurl})
+    .then(getImageData)
+    .then(function (result) {
+        this.images[imageurl] = {
+          imagedata: result.imagedata
+        };
+    }.bind(this));    
+  };
+
+  WEBPrinter.prototype.processImage = function (el) {
+    var line = new Uint8Array();
+    var data = this.images[el.textContent];
+
+    if (data) {
+      if (!data.rawdata) {
+        data.rawdata = OB.ESCPOS.transImage(data.imagedata);
+      }
+      line = append(line, OB.ESCPOS.IMAGE_HEADER);
+      line = append(line, data.rawdata);
+    }
+
+    return line;
+  };  
 
   window.OB = window.OB || {};
   OB.WEBPrinter = WEBPrinter;
