@@ -44,7 +44,6 @@
   var encoder = new TextEncoder('utf-8');
 
   var WEBPrinter = function (info) {
-    this.columns = 32;
     this.webdevice = new info.WebDevice(info);
   };
 
@@ -110,6 +109,9 @@
       //   printerdoc = append(printerdoc, this.processImage(el));        
       }
     }.bind(this));
+    printerdoc = append(printerdoc, OB.ESCPOS.NEW_LINE);
+    printerdoc = append(printerdoc, OB.ESCPOS.NEW_LINE);
+    printerdoc = append(printerdoc, OB.ESCPOS.NEW_LINE);
     printerdoc = append(printerdoc, OB.ESCPOS.PARTIAL_CUT_1);
     return printerdoc;
   };
