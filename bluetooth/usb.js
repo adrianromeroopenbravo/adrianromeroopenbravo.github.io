@@ -79,7 +79,7 @@
       }.bind(this);
     }
 
-    OB.Bluetooth.prototype.onDisconnected = function () {
+    USB.prototype.onDisconnected = function () {
       this.device = null;
     };
 

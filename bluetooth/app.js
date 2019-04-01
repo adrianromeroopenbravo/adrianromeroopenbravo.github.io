@@ -1,7 +1,8 @@
-var bltprinter = new OB.BluetoothPrinter();
-bltprinter.registerImage('ticket-image.png');
+var bltprinter = new OB.WEBPrinter(OB.Bluetooth);
+// bltprinter.registerImage('ticket-image.png');
 
-var usbprinter = new OB.BluetoothPrinter();
+var usbprinter = new OB.WEBPrinter(OB.USB);
+
 
 document.getElementById('usbtest').addEventListener('click', event => {
     var device;
@@ -35,13 +36,20 @@ document.getElementById('usbtest').addEventListener('click', event => {
 });
 
 document.getElementById('usbrequest').addEventListener('click', event => {
-    bltprinter.request()
+    usbprinter.request()
     .catch(error => {
         alert(error);
     });    
 });
 
 document.getElementById('usbprint').addEventListener('click', event => {
+    usbprinter.print(document.getElementById('datareceipt').value)
+    .then(_ => {
+        console.log("success");
+    })
+    .catch(error => { 
+        alert(error);
+    });    
 });
 
 document.getElementById('request').addEventListener('click', event => {

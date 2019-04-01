@@ -11,19 +11,17 @@
 
 (function () {
 
-  window.OB = window.OB || {};
-
-  OB.Bluetooth = function () {
+  var Bluetooth = function () {
     this.size = 20;
     this.device = null;
     this.onDisconnected = this.onDisconnected.bind(this);
   };
 
-  OB.Bluetooth.prototype.connected = function () {
+  Bluetooth.prototype.connected = function () {
     return this.device !== null;
   };
 
-  OB.Bluetooth.prototype.request = function () {
+  Bluetooth.prototype.request = function () {
 
     if (!navigator.bluetooth || !navigator.bluetooth.requestDevice) {
       return Promise.reject('Bluetooth not supported.');
@@ -39,7 +37,7 @@
     }.bind(this));
   };
 
-  OB.Bluetooth.prototype.print = function (data) {
+  Bluetooth.prototype.print = function (data) {
     var result;
 
     if (!this.device) {
@@ -66,16 +64,19 @@
     }.bind(this));
   };
 
-  OB.Bluetooth.prototype.printChunk = function (chunk) {
+  Bluetooth.prototype.printChunk = function (chunk) {
     return function () {
       return this.characteristic.writeValue(chunk);
     }.bind(this);
   };
 
-  OB.Bluetooth.prototype.onDisconnected = function () {
+  Bluetooth.prototype.onDisconnected = function () {
     this.device = null;
     this.characteristic = null;
     this.server = null;
   };
+
+  window.OB = window.OB || {};
+  OB.Bluetooth = Bluetooth;  
 
 }());

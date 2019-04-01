@@ -1,6 +1,6 @@
 /*
  ************************************************************************************
- * Copyright (C) 2018 Openbravo S.L.U.
+ * Copyright (C) 2018-2019 Openbravo S.L.U.
  * Licensed under the Openbravo Commercial License version 1.0
  * You may obtain a copy of the License at http://www.openbravo.com/legal/obcl.html
  * or in the legal folder of this module distribution.
@@ -10,8 +10,6 @@
 /*global OB, Promise, Uint8Array, TextEncoder, DOMParser  */
 
 (function () {
-
-  window.OB = window.OB || {};
 
   function padStart(txt, length, character) {
     var result = txt.padStart(length, character);
@@ -45,20 +43,20 @@
 
   var encoder = new TextEncoder('utf-8');
 
-  OB.BluetoothPrinter = function () {
+  var WEBPrinter = function (WEBDevice) {
     this.columns = 32;
-    this.bluetooth = new OB.Bluetooth();
+    this.webdevice = new WEBDevice();
   };
 
-  OB.BluetoothPrinter.prototype.connected = function () {
-    return this.bluetooth.connected();
+  WEBPrinter.prototype.connected = function () {
+    return this.webdevice.connected();
   };
 
-  OB.BluetoothPrinter.prototype.request = function () {
-    return this.bluetooth.request();
+  WEBPrinter.prototype.request = function () {
+    return this.webdevice.request();
   };
 
-  OB.BluetoothPrinter.prototype.print = function (doc) {
+  WEBPrinter.prototype.print = function (doc) {
 
     var parser = new DOMParser();
     var dom = parser.parseFromString(doc, "application/xml");
@@ -75,7 +73,7 @@
   };
 
 
-  OB.BluetoothPrinter.prototype.processDOM = function (dom) {
+  WEBPrinter.prototype.processDOM = function (dom) {
     var output;
 
     Array.from(dom.children).forEach(function (el) {
@@ -85,13 +83,13 @@
     }.bind(this));
 
     if (output && output.length) {
-      return this.bluetooth.print(output);
+      return this.webdevice.print(output);
     } else {
       return Promise.resolve(); // Nothing printed
     }
   };
 
-  OB.BluetoothPrinter.prototype.processOutput = function (dom) {
+  WEBPrinter.prototype.processOutput = function (dom) {
     var printerdocs = new Uint8Array();
     Array.from(dom.children).forEach(function (el) {
       if (el.nodeName === 'ticket') {
@@ -102,7 +100,7 @@
   };
 
 
-  OB.BluetoothPrinter.prototype.processTicket = function (dom) {
+  WEBPrinter.prototype.processTicket = function (dom) {
     var printerdoc = new Uint8Array();
     Array.from(dom.children).forEach(function (el) {
       if (el.nodeName === 'line') {
@@ -116,7 +114,7 @@
     return printerdoc;
   };
 
-  OB.BluetoothPrinter.prototype.processLine = function (dom) {
+  WEBPrinter.prototype.processLine = function (dom) {
     var line = new Uint8Array();
     var fontsize = dom.getAttribute('size');
 
@@ -166,7 +164,7 @@
     return line;
   };
 
-  OB.BluetoothPrinter.prototype.processBarcode = function (el) {
+  WEBPrinter.prototype.processBarcode = function (el) {
     var line = new Uint8Array();
     var position = el.getAttribute('position');
     var type = el.getAttribute('type');
@@ -219,4 +217,6 @@
     return line;
   };
 
+  window.OB = window.OB || {};
+  OB.WEBPrinter = WEBPrinter;
 }());
