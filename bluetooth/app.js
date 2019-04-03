@@ -7,7 +7,7 @@ document.getElementById('selectbluetooth').addEventListener('click', event => {
         WebDevice: OB.Bluetooth, 
         service: 'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
         characteristic: 'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f',
-        hasDrawer: false
+        ESCPOS: OB.ESCPOS.Base
     });
     printer.registerImage('ticket-image.png');    
 });
@@ -16,8 +16,7 @@ document.getElementById('selectepsontmt').addEventListener('click', event => {
     printer = new OB.WEBPrinter({
         WebDevice: OB.USB,
         vendorId: 0x04B8, 
-        productId: 0x0202,
-        hasDrawer: true
+        productId: 0x0202
     }); // Epson TM-T88V
     printer.registerImage('ticket-image.png');  
 });

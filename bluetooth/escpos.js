@@ -11,41 +11,39 @@
 
 (function () {
 
-  window.OB = window.OB || {};
 
-  OB.ESCPOS = {
-    NEW_LINE: new Uint8Array([0x0D, 0x0A]),
+  var Base = function () {
+    this.NEW_LINE = new Uint8Array([0x0D, 0x0A]);
+    this.PARTIAL_CUT_1 = new Uint8Array();
 
-    CHAR_SIZE_0: new Uint8Array([0x1D, 0x21, 0x00]),
-    CHAR_SIZE_1: new Uint8Array([0x1D, 0x21, 0x01]),
-    CHAR_SIZE_2: new Uint8Array([0x1D, 0x21, 0x30]),
-    CHAR_SIZE_3: new Uint8Array([0x1D, 0x21, 0x31]),
+    this.CHAR_SIZE_0 = new Uint8Array([0x1D, 0x21, 0x00]);
+    this.CHAR_SIZE_1 = new Uint8Array([0x1D, 0x21, 0x01]);
+    this.CHAR_SIZE_2 = new Uint8Array([0x1D, 0x21, 0x30]);
+    this.CHAR_SIZE_3 = new Uint8Array([0x1D, 0x21, 0x31]);
 
-    BOLD_SET: new Uint8Array([0x1B, 0x45, 0x01]),
-    BOLD_RESET: new Uint8Array([0x1B, 0x45, 0x00]),
-    UNDERLINE_SET: new Uint8Array([0x1B, 0x2D, 0x01]),
-    UNDERLINE_RESET: new Uint8Array([0x1B, 0x2D, 0x00]),
+    this.BOLD_SET = new Uint8Array([0x1B, 0x45, 0x01]);
+    this.BOLD_RESET = new Uint8Array([0x1B, 0x45, 0x00]);
+    this.UNDERLINE_SET = new Uint8Array([0x1B, 0x2D, 0x01]);
+    this.UNDERLINE_RESET = new Uint8Array([0x1B, 0x2D, 0x00]);
 
-    CENTER_JUSTIFICATION: new Uint8Array([0x1B, 0x61, 0x01]),
-    LEFT_JUSTIFICATION: new Uint8Array([0x1B, 0x61, 0x00]),
-    RIGHT_JUSTIFICATION: new Uint8Array([0x1B, 0x61, 0x02]),
+    this.CENTER_JUSTIFICATION = new Uint8Array([0x1B, 0x61, 0x01]);
+    this.LEFT_JUSTIFICATION = new Uint8Array([0x1B, 0x61, 0x00]);
+    this.RIGHT_JUSTIFICATION = new Uint8Array([0x1B, 0x61, 0x02]);
 
-    BAR_HEIGHT: new Uint8Array([0x1D, 0x68, 0x40]),
-    BAR_WIDTH3: new Uint8Array([0x1D, 0x77, 0x03]),
-    BAR_WIDTH2: new Uint8Array([0x1D, 0x77, 0x02]),
-    BAR_WIDTH1: new Uint8Array([0x1D, 0x77, 0x01]),
-    BAR_POSITIONDOWN: new Uint8Array([0x1D, 0x48, 0x02]),
-    BAR_POSITIONNONE: new Uint8Array([0x1D, 0x48, 0x00]),
-    BAR_HRIFONT1: new Uint8Array([0x1D, 0x66, 0x01]),
-    BAR_CODE02: new Uint8Array([0x1D, 0x6B, 0x02]),
-    BAR_CODE128: new Uint8Array([0x1D, 0x6B, 0x49]),
-    BAR_CODE128TYPE: new Uint8Array([0x7B, 0x42]),
+    this.BAR_HEIGHT = new Uint8Array([0x1D, 0x68, 0x40]);
+    this.BAR_WIDTH3 = new Uint8Array([0x1D, 0x77, 0x03]);
+    this.BAR_WIDTH2 = new Uint8Array([0x1D, 0x77, 0x02]);
+    this.BAR_WIDTH1 = new Uint8Array([0x1D, 0x77, 0x01]);
+    this.BAR_POSITIONDOWN = new Uint8Array([0x1D, 0x48, 0x02]);
+    this.BAR_POSITIONNONE = new Uint8Array([0x1D, 0x48, 0x00]);
+    this.BAR_HRIFONT1 = new Uint8Array([0x1D, 0x66, 0x01]);
+    this.BAR_CODE02 = new Uint8Array([0x1D, 0x6B, 0x02]);
+    this.BAR_CODE128 = new Uint8Array([0x1D, 0x6B, 0x49]);
+    this.BAR_CODE128TYPE = new Uint8Array([0x7B, 0x42]);
 
-    IMAGE_HEADER: new Uint8Array([0x1D, 0x76, 0x30, 0x03]),
+    this.IMAGE_HEADER = new Uint8Array();
 
-    PARTIAL_CUT_1: new Uint8Array([0x1B, 0x69]),
-
-    transCode128: function (txt) {
+    this.transCode128 = function (txt) {
 
       function transCode128Char(c) {
         switch (c) {
@@ -238,9 +236,20 @@
       } else {
         return new Uint8Array();
       }
-    },
+    };
 
-    transImage: function (imagedata) {
+    this.transImage = function (imagedata) {
+      return new Uint8Array();
+    };
+  };
+
+  var Standard = function () {
+    Base.call(this); 
+
+    this.PARTIAL_CUT_1 = new Uint8Array([0x1B, 0x69]);
+
+    this.IMAGE_HEADER = new Uint8Array([0x1D, 0x76, 0x30, 0x03]);
+    this.transImage = function (imagedata) {
 
       function isBlack(x, y) {
         if (x < 0 || x >= imagedata.width || y < 0 || y >= imagedata.height) {
@@ -282,6 +291,13 @@
       }
 
       return new Uint8Array(result);
-    }
+    };
+  };
+
+  window.OB = window.OB || {};
+  OB.ESCPOS = {
+    Base: Base, // Basic ESCPOS codes with limited functionality. No images, No cut paper, No drawer.
+    Standard: Standard, // Full featured. Standard EPSON ESCPOS codes.
+    standardinst: new Standard()
   };
 }());
