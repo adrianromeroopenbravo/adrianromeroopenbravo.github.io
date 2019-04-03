@@ -65,6 +65,7 @@
       this.webdevice = new info.WebDevice(info);
       this.hasDrawer = info.hasDrawer;
       this.ESCPOS = info.ESCPOS || OB.ESCPOS;
+      this.images = [];
       };
 
   WEBPrinter.prototype.hasDrawer = function () {
@@ -128,8 +129,8 @@
         printerdoc = append(printerdoc, this.ESCPOS.NEW_LINE);
       } else if (el.nodeName === 'barcode') {
         printerdoc = append(printerdoc, this.processBarcode(el));
-        // } else if (el.nodeName === 'image') {
-        //   printerdoc = append(printerdoc, this.processImage(el));        
+      } else if (el.nodeName === 'image') {
+        printerdoc = append(printerdoc, this.processImage(el));        
       }
     }.bind(this));
     printerdoc = append(printerdoc, this.ESCPOS.NEW_LINE);
