@@ -65,7 +65,7 @@
 
   var WEBPrinter = function (info) {
       this.webdevice = new info.WebDevice(info);
-      this.escpos = new info.ESCPOS() || OB.ESCPOS.standardinst;
+      this.escpos = info.ESCPOS ? new info.ESCPOS() : OB.ESCPOS.standardinst;
       this.images = [];
       };
 
