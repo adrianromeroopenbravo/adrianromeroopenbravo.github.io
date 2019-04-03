@@ -239,18 +239,8 @@
         return new Uint8Array();
       }
     },
-    
-    printArray: function (printChunk, size, data) {
-      var i, result;
 
-      result = Promise.resolve();
-      for (i = 0; i < data.length; i += size) {
-        result = result.then(printChunk(data.slice(i, i + size)));
-      }
-      return result;
-    },
-
-    transImage: function(imagedata) {
+    transImage: function (imagedata) {
 
       function isBlack(x, y) {
         if (x < 0 || x >= imagedata.width || y < 0 || y >= imagedata.height) {
@@ -258,14 +248,13 @@
         }
         var index = y * imagedata.width * 4 + x * 4;
         var luminosity = 0;
-        luminosity += 0.30 * imagedata.data[index];     // RED luminosity
+        luminosity += 0.30 * imagedata.data[index]; // RED luminosity
         luminosity += 0.59 * imagedata.data[index + 1]; // GREEN luminosity
         luminosity += 0.11 * imagedata.data[index + 2]; // BLUE luminosity
         luminosity = 1 - luminosity / 255;
-        luminosity *= imagedata.data[index + 3] / 255;  // ALPHA factor
-
+        luminosity *= imagedata.data[index + 3] / 255; // ALPHA factor
         return luminosity >= 0.5;
-      }; 
+      }
 
       var result = [];
       var i, j, p, d;
@@ -292,7 +281,7 @@
         }
       }
 
-      return new Uint8Array(result);   
-    }    
+      return new Uint8Array(result);
+    }
   };
 }());
