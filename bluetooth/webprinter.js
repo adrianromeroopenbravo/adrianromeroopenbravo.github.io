@@ -294,7 +294,7 @@
       line = append(line, this.escpos.IMAGE_HEADER);
       line = append(line, data.rawdata);
       return line;
-    });
+    }.bind(this));
   };
 
   window.OB = window.OB || {};
