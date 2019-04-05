@@ -47,7 +47,7 @@
     }).then(function (device) {
       this.device = device;
       return this.printertype.devices.find(function(d) {
-        return d.vendorId === device.vendorId && d.productId === device.vendorId;
+        return d.vendorId === device.vendorId && d.productId === device.productId;
       });
     }.bind(this));
   };
