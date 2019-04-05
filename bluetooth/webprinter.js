@@ -102,7 +102,7 @@
 
     Array.from(dom.children).forEach(function (el) {
       if (el.nodeName === 'output') {
-        result = result.then(this.processOutput(el)).then(function(output) {
+        result = result.then(() => this.processOutput(el)).then(function(output) {
           printerdocs = output;
         }.bind(this));
       }
@@ -122,7 +122,7 @@
     var printerdocs = new Uint8Array();
     Array.from(dom.children).forEach(function (el) {
       if (el.nodeName === 'ticket') {
-        result = result.then(this.processTicket(el)).then(function (output) {
+        result = result.then(() => this.processTicket(el)).then(function (output) {
           printerdocs = append(printerdocs, output);
         }.bind(this));
       }
@@ -137,16 +137,16 @@
     var printerdoc = new Uint8Array();
     Array.from(dom.children).forEach(function (el) {
       if (el.nodeName === 'line') {
-        result = result.then(this.processLine(el)).then(function(output) {
+        result = result.then(() => this.processLine(el)).then(function(output) {
           printerdoc = append(printerdoc, output);
           printerdoc = append(printerdoc, this.escpos.NEW_LINE);
         }.bind(this));
       } else if (el.nodeName === 'barcode') {
-        result = result.then(this.processBarcode(el)).then(function(output) {
+        result = result.then(() => this.processBarcode(el)).then(function(output) {
           printerdoc = append(printerdoc, output);
         }.bind(this));
       } else if (el.nodeName === 'image') {
-        result = result.then(this.processImage(el)).then(function(output) {
+        result = result.then(() => this.processImage(el)).then(function(output) {
           printerdoc = append(printerdoc, output);
         }.bind(this));       
       }
