@@ -11,10 +11,10 @@
 
 (function () {
 
-  var Bluetooth = function (info) {
-      this.info = info;
-      this.size = this.info.buffersize || 20;
+  var Bluetooth = function (printertype) {
+      this.printertype = printertype;
       this.device = null;
+      this.size = this.printertype.buffersize || 20;
       };
 
   Bluetooth.prototype.connected = function () {
@@ -29,11 +29,12 @@
 
     return navigator.bluetooth.requestDevice({
       filters: [{
-        services: [this.info.service]
+        services: [this.printertype.device.service]
       }]
     }).then(function (device) {
       this.device = device;
       this.device.addEventListener('gattserverdisconnected', this.onDisconnected.bind(this));
+      return this.printertype.device;      
     }.bind(this));
   };
 
