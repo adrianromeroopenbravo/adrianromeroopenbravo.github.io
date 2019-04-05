@@ -250,7 +250,7 @@
   WEBPrinter.prototype.registerImage = function (imageurl) {
     Promise.resolve({
       image: imageurl,
-      width: this.escpos.IMAGE_WIDTH
+      width: 256
     }).then(getImageData).then(function (result) {
       this.images[imageurl] = {
         imagedata: result.imagedata
