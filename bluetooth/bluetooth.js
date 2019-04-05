@@ -50,9 +50,9 @@
     } else {
       result = this.device.gatt.connect().then(function (server) {
         this.server = server;
-        return server.getPrimaryService(this.info.service);
+        return server.getPrimaryService(this.printertype.device.service);
       }.bind(this)).then(function (service) {
-        return service.getCharacteristic(this.info.characteristic);
+        return service.getCharacteristic(this.printertype.device.characteristic);
       }.bind(this)).then(function (characteristic) {
         this.characteristic = characteristic;
         return OB.ARRAYS.printArray(this.printChunk.bind(this), this.size, data);
