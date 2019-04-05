@@ -292,7 +292,7 @@
     }).then(function (result) {
       var line = new Uint8Array();
       line = append(line, this.escpos.IMAGE_HEADER);
-      line = append(line, result.imagedata);
+      line = append(line, this.escpos.transImage(result.imagedata));
       return line;
     }.bind(this));
   };
