@@ -79,7 +79,7 @@
   };
 
   WEBPrinter.prototype.request = function () {
-    return this.webdevice.request().then(function(deviceinfo) {
+    return this.webdevice.request().then(function (deviceinfo) {
       this.escpos = deviceinfo.ESCPOS ? new deviceinfo.ESCPOS() : OB.ESCPOS.standardinst;
     }.bind(this));
   };
@@ -97,52 +97,69 @@
   };
 
   WEBPrinter.prototype.processDOM = function (dom) {
-    var output;
-    try {
-      Array.from(dom.children).forEach(function (el) {
-        if (el.nodeName === 'output') {
-          output = this.processOutput(el);
-        }
-      }.bind(this));
-    } catch (ex) {
-      return Promise.reject(ex);
-    }
+    var result = Promise.resolve();
+    var printerdocs;
 
-    if (output && output.length) {
-      return this.webdevice.print(output);
-    } else {
-      return Promise.resolve(); // Nothing printed
-    }
+    Array.from(dom.children).forEach(function (el) {
+      if (el.nodeName === 'output') {
+        result = result.then(this.processOutput(el)).then(function(output) {
+          printerdocs = output
+        });
+      }
+    }.bind(this));
+
+    return result.then(function() {
+      if (printerdocs && printerdocs.length) {
+        return this.webdevice.print(printerdocs);
+      } else {
+        return Promise.resolve(); // Nothing printed
+      }
+    });
   };
 
   WEBPrinter.prototype.processOutput = function (dom) {
+    var result = Promise.resolve();
     var printerdocs = new Uint8Array();
     Array.from(dom.children).forEach(function (el) {
       if (el.nodeName === 'ticket') {
-        printerdocs = append(printerdocs, this.processTicket(el));
+        result = result.then(this.processTicket(el)).then(function (output) {
+          printerdocs = append(printerdocs, output);
+        });
       }
     }.bind(this));
-    return printerdocs;
+    return result.then(function () {
+      return printerdocs;
+    });
   };
 
   WEBPrinter.prototype.processTicket = function (dom) {
+    var result = Promise.resolve();
     var printerdoc = new Uint8Array();
     Array.from(dom.children).forEach(function (el) {
       if (el.nodeName === 'line') {
-        printerdoc = append(printerdoc, this.processLine(el));
-        printerdoc = append(printerdoc, this.escpos.NEW_LINE);
+        result = result.then(this.processLine(el)).then(function(output) {
+          printerdoc = append(printerdoc, output);
+          printerdoc = append(printerdoc, this.escpos.NEW_LINE);
+        });
       } else if (el.nodeName === 'barcode') {
-        printerdoc = append(printerdoc, this.processBarcode(el));
+        result = result.then(this.processBarcode(el)).then(function(output) {
+          printerdoc = append(printerdoc, output);
+        });
       } else if (el.nodeName === 'image') {
-        printerdoc = append(printerdoc, this.processImage(el));
+        result = result.then(this.processImage(el)).then(function(output) {
+          printerdoc = append(printerdoc, output);
+        });       
       }
     }.bind(this));
-    printerdoc = append(printerdoc, this.escpos.NEW_LINE);
-    printerdoc = append(printerdoc, this.escpos.NEW_LINE);
-    printerdoc = append(printerdoc, this.escpos.NEW_LINE);
-    printerdoc = append(printerdoc, this.escpos.NEW_LINE);
-    printerdoc = append(printerdoc, this.escpos.PARTIAL_CUT_1);
-    return printerdoc;
+
+    return result.then(function() {
+      printerdoc = append(printerdoc, this.escpos.NEW_LINE);
+      printerdoc = append(printerdoc, this.escpos.NEW_LINE);
+      printerdoc = append(printerdoc, this.escpos.NEW_LINE);
+      printerdoc = append(printerdoc, this.escpos.NEW_LINE);
+      printerdoc = append(printerdoc, this.escpos.PARTIAL_CUT_1);      
+      return printerdoc;
+    });
   };
 
   WEBPrinter.prototype.processLine = function (dom) {
@@ -191,7 +208,7 @@
       }
     }.bind(this));
 
-    return line;
+    return Promise.resolve(line);
   };
 
   WEBPrinter.prototype.processBarcode = function (el) {
@@ -244,13 +261,13 @@
 
     line = append(line, this.escpos.NEW_LINE);
     line = append(line, this.escpos.LEFT_JUSTIFICATION);
-    return line;
+    return Promise.resolve(line);
   };
 
   WEBPrinter.prototype.registerImage = function (imageurl) {
-    Promise.resolve({
+    return Promise.resolve({
       image: imageurl,
-      width: 256
+      width: this.escpos.IMAGE_WIDTH
     }).then(getImageData).then(function (result) {
       this.images[imageurl] = {
         imagedata: result.imagedata
@@ -270,7 +287,7 @@
       line = append(line, data.rawdata);
     }
 
-    return line;
+    return Promise.resolve(line);
   };
 
   window.OB = window.OB || {};
