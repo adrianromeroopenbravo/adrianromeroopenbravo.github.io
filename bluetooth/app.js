@@ -4,10 +4,14 @@ var printer;
 
 document.getElementById('selectbluetooth').addEventListener('click', event => {
     printer = new OB.WEBPrinter({
-        WebDevice: OB.Bluetooth, 
-        service: 'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
-        characteristic: 'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f',
-        ESCPOS: OB.ESCPOS.Base
+        WebDevice: OB.Bluetooth,
+        buffersize: 20,
+        device: {
+            name: 'Generic Bluetooth printer',
+            service: 'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
+            characteristic: 'bef8d6c9-9c21-4c9e-b632-bd58c1009f9f',
+            ESCPOS: OB.ESCPOS.Base
+        }
     });
     printer.registerImage('ticket-image.png');    
 });
@@ -15,8 +19,12 @@ document.getElementById('selectbluetooth').addEventListener('click', event => {
 document.getElementById('selectepsontmt').addEventListener('click', event => {
     printer = new OB.WEBPrinter({
         WebDevice: OB.USB,
-        vendorId: 0x04B8, 
-        productId: 0x0202
+        devices: [{
+            name: 'EPSON TM T88V',
+            vendorId: 0x04B8,
+            productId: 0x0202,
+            ESCPOS: OB.ESCPOS.Standard
+        }]
     }); // Epson TM-T88V
     printer.registerImage('ticket-image.png');  
 });
