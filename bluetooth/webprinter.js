@@ -102,13 +102,15 @@
 
     Array.from(dom.children).forEach(function (el) {
       if (el.nodeName === 'output') {
-        result = result.then(() => this.processOutput(el)).then(function(output) {
+        result = result.then(function () {
+          return this.processOutput(el);
+        }.bind(this)).then(function (output) {
           printerdocs = output;
         }.bind(this));
       }
     }.bind(this));
 
-    return result.then(function() {
+    return result.then(function () {
       if (printerdocs && printerdocs.length) {
         return this.webdevice.print(printerdocs);
       } else {
@@ -122,7 +124,9 @@
     var printerdocs = new Uint8Array();
     Array.from(dom.children).forEach(function (el) {
       if (el.nodeName === 'ticket') {
-        result = result.then(() => this.processTicket(el)).then(function (output) {
+        result = result.then(function () {
+          return this.processTicket(el);
+        }.bind(this)).then(function (output) {
           printerdocs = append(printerdocs, output);
         }.bind(this));
       }
@@ -137,27 +141,33 @@
     var printerdoc = new Uint8Array();
     Array.from(dom.children).forEach(function (el) {
       if (el.nodeName === 'line') {
-        result = result.then(() => this.processLine(el)).then(function(output) {
+        result = result.then(function () {
+          return this.processLine(el);
+        }.bind(this)).then(function (output) {
           printerdoc = append(printerdoc, output);
           printerdoc = append(printerdoc, this.escpos.NEW_LINE);
         }.bind(this));
       } else if (el.nodeName === 'barcode') {
-        result = result.then(() => this.processBarcode(el)).then(function(output) {
+        result = result.then(function () {
+          return this.processBarcode(el);
+        }.bind(this)).then(function (output) {
           printerdoc = append(printerdoc, output);
         }.bind(this));
       } else if (el.nodeName === 'image') {
-        result = result.then(() => this.processImage(el)).then(function(output) {
+        result = result.then(function () {
+          return this.processImage(el);
+        }.bind(this)).then(function (output) {
           printerdoc = append(printerdoc, output);
-        }.bind(this));       
+        }.bind(this));
       }
     }.bind(this));
 
-    return result.then(function() {
+    return result.then(function () {
       printerdoc = append(printerdoc, this.escpos.NEW_LINE);
       printerdoc = append(printerdoc, this.escpos.NEW_LINE);
       printerdoc = append(printerdoc, this.escpos.NEW_LINE);
       printerdoc = append(printerdoc, this.escpos.NEW_LINE);
-      printerdoc = append(printerdoc, this.escpos.PARTIAL_CUT_1);      
+      printerdoc = append(printerdoc, this.escpos.PARTIAL_CUT_1);
       return printerdoc;
     }.bind(this));
   };
