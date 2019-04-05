@@ -80,7 +80,7 @@
 
   WEBPrinter.prototype.request = function () {
     return this.webdevice.request().then(function(deviceinfo) {
-      this.escpos = deviceinfo.ESCPOS ? deviceinfo.ESCPOS() : OB.ESCPOS.standardinst;
+      this.escpos = deviceinfo.ESCPOS ? new deviceinfo.ESCPOS() : OB.ESCPOS.standardinst;
     }.bind(this));
   };
 
