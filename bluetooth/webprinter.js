@@ -103,8 +103,8 @@
     Array.from(dom.children).forEach(function (el) {
       if (el.nodeName === 'output') {
         result = result.then(this.processOutput(el)).then(function(output) {
-          printerdocs = output
-        });
+          printerdocs = output;
+        }.bind(this));
       }
     }.bind(this));
 
@@ -114,7 +114,7 @@
       } else {
         return Promise.resolve(); // Nothing printed
       }
-    });
+    }.bind(this));
   };
 
   WEBPrinter.prototype.processOutput = function (dom) {
@@ -124,12 +124,12 @@
       if (el.nodeName === 'ticket') {
         result = result.then(this.processTicket(el)).then(function (output) {
           printerdocs = append(printerdocs, output);
-        });
+        }.bind(this));
       }
     }.bind(this));
     return result.then(function () {
       return printerdocs;
-    });
+    }.bind(this));
   };
 
   WEBPrinter.prototype.processTicket = function (dom) {
@@ -140,15 +140,15 @@
         result = result.then(this.processLine(el)).then(function(output) {
           printerdoc = append(printerdoc, output);
           printerdoc = append(printerdoc, this.escpos.NEW_LINE);
-        });
+        }.bind(this));
       } else if (el.nodeName === 'barcode') {
         result = result.then(this.processBarcode(el)).then(function(output) {
           printerdoc = append(printerdoc, output);
-        });
+        }.bind(this));
       } else if (el.nodeName === 'image') {
         result = result.then(this.processImage(el)).then(function(output) {
           printerdoc = append(printerdoc, output);
-        });       
+        }.bind(this));       
       }
     }.bind(this));
 
@@ -159,7 +159,7 @@
       printerdoc = append(printerdoc, this.escpos.NEW_LINE);
       printerdoc = append(printerdoc, this.escpos.PARTIAL_CUT_1);      
       return printerdoc;
-    });
+    }.bind(this));
   };
 
   WEBPrinter.prototype.processLine = function (dom) {
