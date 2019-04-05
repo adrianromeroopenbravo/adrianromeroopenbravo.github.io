@@ -286,18 +286,15 @@
   };
 
   WEBPrinter.prototype.processImage = function (el) {
-    var line = new Uint8Array();
-    var data = this.images[el.textContent];
-
-    if (data) {
-      if (!data.rawdata) {
-        data.rawdata = this.escpos.transImage(data.imagedata);
-      }
+    return getImageData({
+      image: el.textContent,
+      width: this.escpos.IMAGE_WIDTH
+    }).then(function (result) {
+      var line = new Uint8Array();
       line = append(line, this.escpos.IMAGE_HEADER);
       line = append(line, data.rawdata);
-    }
-
-    return Promise.resolve(line);
+      return line;
+    });
   };
 
   window.OB = window.OB || {};
