@@ -119,11 +119,11 @@
         result = result.then(function () {
           return this.processTicket(el);
         }.bind(this)).then(function (output) {
-          printerdocs = OB.ARRAYS.OB.ARRAYS.append(printerdocs, output);
+          printerdocs = OB.ARRAYS.append(printerdocs, output);
         }.bind(this));
       } else if (el.nodeName === 'opendrawer') {
         result = result.then(function () {
-          printerdocs = OB.ARRAYS.OB.ARRAYS.append(printerdocs, this.escpos.DRAWER_OPEN);
+          printerdocs = OB.ARRAYS.append(printerdocs, this.escpos.DRAWER_OPEN);
         }.bind(this));
       }
     }.bind(this));
@@ -140,14 +140,14 @@
         result = result.then(function () {
           return this.processLine(el);
         }.bind(this)).then(function (output) {
-          printerdoc = OB.ARRAYS.OB.ARRAYS.append(printerdoc, output);
-          printerdoc = OB.ARRAYS.OB.ARRAYS.append(printerdoc, this.escpos.NEW_LINE);
+          printerdoc = OB.ARRAYS.append(printerdoc, output);
+          printerdoc = OB.ARRAYS.append(printerdoc, this.escpos.NEW_LINE);
         }.bind(this));
       } else if (el.nodeName === 'barcode') {
         result = result.then(function () {
           return this.processBarcode(el);
         }.bind(this)).then(function (output) {
-          printerdoc = OB.ARRAYS.OB.ARRAYS.append(printerdoc, output);
+          printerdoc = OB.ARRAYS.append(printerdoc, output);
         }.bind(this));
       } else if (el.nodeName === 'image') {
         result = result.then(function () {
