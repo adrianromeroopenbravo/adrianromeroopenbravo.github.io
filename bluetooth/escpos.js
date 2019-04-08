@@ -338,7 +338,7 @@
         line = OB.ARRAYS.append(line, this.QR_SIZE_MAP[size]);
 
         line = OB.ARRAYS.append(line, this.QR_PRINT);
-        line = OB.ARRAYS.append(line, this.escpos.LEFT_JUSTIFICATION);
+        line = OB.ARRAYS.append(line, this.LEFT_JUSTIFICATION);
         return new Uint8Array(line);
       };
       };
