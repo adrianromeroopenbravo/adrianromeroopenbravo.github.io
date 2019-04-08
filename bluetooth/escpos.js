@@ -373,7 +373,7 @@
 
         line = OB.ARRAYS.append(line, this.transBarcodeHeader(code, position));
 
-        line = OB.ARRAYS.append(line, this.escpos.BAR_CODE02);
+        line = OB.ARRAYS.append(line, this.BAR_CODE02);
         line = OB.ARRAYS.append(line, this.encoderEAN13.encode(barcode));
         line = OB.ARRAYS.append(line, new Uint8Array([0x00]));
 
@@ -385,7 +385,7 @@
         var line = new Uint8Array();
         line = OB.ARRAYS.append(line, this.transBarcodeHeader(code, position));
 
-        line = OB.ARRAYS.append(line, this.escpos.BAR_CODE128);
+        line = OB.ARRAYS.append(line, this.BAR_CODE128);
         var barcode128 = this.encoderCODE128.encode(code);
         line = OB.ARRAYS.append(line, new Uint8Array([this.BAR_CODE128TYPE.length + barcode128.length]));
         line = OB.ARRAYS.append(line, this.BAR_CODE128TYPE);
