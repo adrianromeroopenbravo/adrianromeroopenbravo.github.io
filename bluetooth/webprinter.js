@@ -40,7 +40,7 @@
       img.src = data.image;
       img.onload = function () {
         var canvas = document.createElement('canvas');
-        var width = data.width || 256;
+        var width = img.width;
         canvas.width = width;
         canvas.height = img.height;
         var ctx = canvas.getContext('2d');
