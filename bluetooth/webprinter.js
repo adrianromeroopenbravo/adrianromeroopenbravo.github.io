@@ -40,15 +40,10 @@
       img.src = data.image;
       img.onload = function () {
         var canvas = document.createElement('canvas');
-        var width = img.width;
-        canvas.width = width;
+        canvas.width = img.width;
         canvas.height = img.height;
         var ctx = canvas.getContext('2d');
-        if (canvas.width > img.width) {
-          ctx.drawImage(img, (canvas.width - img.width) / 2, 0, img.width, img.height);
-        } else {
-          ctx.drawImage(img, 0, 0, canvas.width, img.height);
-        }
+        ctx.drawImage(img, 0, 0, img.width, img.height);
         img.style.display = 'none';
         data.imagedata = ctx.getImageData(0, 0, canvas.width, canvas.height);
         resolve(data);
@@ -224,69 +219,38 @@
   };
 
   WEBPrinter.prototype.processBarcode = function (el) {
-    var line = new Uint8Array();
-    var position = el.getAttribute('position');
+
     var type = el.getAttribute('type');
-    var barcode = el.textContent;
-
-    line = OB.ARRAYS.append(line, this.escpos.CENTER_JUSTIFICATION);
-
-    line = OB.ARRAYS.append(line, this.escpos.NEW_LINE);
-    line = OB.ARRAYS.append(line, this.escpos.BAR_HEIGHT);
-    if (position === 'none') {
-      line = OB.ARRAYS.append(line, this.escpos.BAR_POSITIONNONE);
-    } else {
-      line = OB.ARRAYS.append(line, this.escpos.BAR_POSITIONDOWN);
-    }
+    var position = el.getAttribute('position');
+    var code = el.textContent;
 
     if (type === 'EAN13') {
-      line = OB.ARRAYS.append(line, this.escpos.BAR_WIDTH3);
-
-      line = OB.ARRAYS.append(line, this.escpos.BAR_HRIFONT1);
-      line = OB.ARRAYS.append(line, this.escpos.BAR_CODE02);
-
-      barcode = padStart(barcode, 13, '0');
-      barcode = barcode.substring(0, 12);
-      line = OB.ARRAYS.append(line, encoder.encode(barcode));
-      line = OB.ARRAYS.append(line, new Uint8Array([0x00]));
+      return Promise.resolve(this.escpos.transEAN13(code, position));
     } else if (type === 'CODE128') {
-      if (barcode.length > 14) {
-        line = OB.ARRAYS.append(line, this.escpos.BAR_WIDTH1);
-      } else if (barcode.length > 8) {
-        line = OB.ARRAYS.append(line, this.escpos.BAR_WIDTH2);
-      } else {
-        line = OB.ARRAYS.append(line, this.escpos.BAR_WIDTH3);
-      }
-      line = OB.ARRAYS.append(line, this.escpos.BAR_HRIFONT1);
-      line = OB.ARRAYS.append(line, this.escpos.BAR_CODE128);
-
-      var barcode128 = this.escpos.transCode128(barcode);
-      line = OB.ARRAYS.append(line, new Uint8Array([barcode128.length + 2]));
-      line = OB.ARRAYS.append(line, this.escpos.BAR_CODE128TYPE);
-      line = OB.ARRAYS.append(line, barcode128);
-      line = OB.ARRAYS.append(line, new Uint8Array([0x00]));
+      return Promise.resolve(this.escpos.transCODE128(code, position));
     } else { // Unknown barcode type
+      var line = new Uint8Array();
+      line = OB.ARRAYS.append(line, this.CENTER_JUSTIFICATION);
+      line = OB.ARRAYS.append(line, this.NEW_LINE);
       line = OB.ARRAYS.append(line, encoder.encode(type));
       line = OB.ARRAYS.append(line, encoder.encode(': '));
-      line = OB.ARRAYS.append(line, encoder.encode(barcode));
+      line = OB.ARRAYS.append(line, encoder.encode(code));
+      line = OB.ARRAYS.append(line, this.escpos.NEW_LINE);
+      line = OB.ARRAYS.append(line, this.escpos.LEFT_JUSTIFICATION);
+      return Promise.resolve(line);
     }
-
-    line = OB.ARRAYS.append(line, this.escpos.NEW_LINE);
-    line = OB.ARRAYS.append(line, this.escpos.LEFT_JUSTIFICATION);
-    return Promise.resolve(line);
   };
 
   WEBPrinter.prototype.processQR = function (el) {
     var quality = el.getAttribute('quality') || 'L';
     var size = el.getAttribute('size') || 'M';
-    var code = encoder.encode(el.textContent);
+    var code = el.textContent;
     return Promise.resolve(this.escpos.transQR(code, quality, size));
   };
 
   WEBPrinter.prototype.processImage = function (el) {
     return getImageData({
-      image: el.textContent,
-      width: this.escpos.IMAGE_WIDTH
+      image: el.textContent
     }).then(function (result) {
       return this.escpos.transImage(result.imagedata);
     }.bind(this));
