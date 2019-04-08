@@ -34,7 +34,7 @@
     }).then(function (device) {
       this.device = device;
       this.device.addEventListener('gattserverdisconnected', this.onDisconnected.bind(this));
-      return this.printertype.device;      
+      return this.printertype.device;
     }.bind(this));
   };
 

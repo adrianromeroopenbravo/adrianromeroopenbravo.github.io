@@ -37,7 +37,7 @@
     var filters = [];
     this.printertype.devices.forEach(function (item) {
       filters.push({
-        vendorId: item.vendorId, 
+        vendorId: item.vendorId,
         productId: item.productId
       });
     });
@@ -46,7 +46,7 @@
       filters: filters
     }).then(function (device) {
       this.device = device;
-      return this.printertype.devices.find(function(d) {
+      return this.printertype.devices.find(function (d) {
         return d.vendorId === device.vendorId && d.productId === device.productId;
       });
     }.bind(this));
