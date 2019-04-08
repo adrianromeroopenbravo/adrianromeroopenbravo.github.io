@@ -149,6 +149,12 @@
         }.bind(this)).then(function (output) {
           printerdoc = OB.ARRAYS.append(printerdoc, output);
         }.bind(this));
+      } else if (el.nodeName === 'qr') {
+        result = result.then(function () {
+          return this.processQR(el);
+        }.bind(this)).then(function (output) {
+          printerdoc = OB.ARRAYS.append(printerdoc, output);
+        }.bind(this));
       } else if (el.nodeName === 'image') {
         result = result.then(function () {
           return this.processImage(el);
