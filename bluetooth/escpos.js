@@ -255,7 +255,7 @@
       this.PARTIAL_CUT_1 = new Uint8Array([0x1B, 0x69]);
 
       this.IMAGE_HEADER = new Uint8Array([0x1D, 0x76, 0x30, 0x03]);
-      this.IMAGE_WIDTH = 0;
+      this.IMAGE_WIDTH = 256;
       this.transImage = function (imagedata) {
 
         function isBlack(x, y) {
@@ -298,8 +298,10 @@
           }
         }
 
+        line = OB.ARRAYS.append(line, this.CENTER_JUSTIFICATION);
         line = OB.ARRAYS.append(line, this.IMAGE_HEADER);
         line = OB.ARRAYS.append(line, new Uint8Array(result));
+        line = OB.ARRAYS.append(line, this.LEFT_JUSTIFICATION);
         return line;
       };
 
