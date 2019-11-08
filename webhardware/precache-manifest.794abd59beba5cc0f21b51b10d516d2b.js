@@ -3,7 +3,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "./1d11654c497b6c33c325668870795f0f.svg"
   },
   {
-    "revision": "11cbffcb144f0e0748ef",
+    "revision": "d52bafa70fcf66d53890",
     "url": "./bundle.js"
   },
   {
@@ -19,7 +19,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "./index.html"
   },
   {
-    "revision": "11cbffcb144f0e0748ef",
+    "revision": "d52bafa70fcf66d53890",
     "url": "./main.css"
   },
   {
